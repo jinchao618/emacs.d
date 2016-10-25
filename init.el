@@ -140,7 +140,7 @@
 (when (file-exists-p (expand-file-name "init-local.el" user-emacs-directory))
   (error "Please move init-local.el to ~/.emacs.d/lisp"))
 ;(require 'init-local nil t)
-(require 'init-local)
+;(require 'init-local)
 ;; make tab key do indent first then completion.
 
 ;; ;;----------------------------------------------------------------------------
