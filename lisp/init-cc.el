@@ -17,8 +17,8 @@
         c-basic-offset 2
         indent-tabs-mode nil
         c-eletric-pound-behavior '(alignleft))
-  (c-set-offset 'arglist-intro 'c-lineup-arglist-intro-after-paren)
-  (c-set-offset 'arglist-close 'c-lineup-arglist-close-under-paren)
+  ;;(c-set-offset 'arglist-intro 'c-lineup-arglist-intro-after-paren)
+  ;;(c-set-offset 'arglist-close 'c-lineup-arglist-close-under-paren)
   (c-set-offset 'inline-open 0)
   (c-toggle-hungry-state t)
   (which-function-mode t)
