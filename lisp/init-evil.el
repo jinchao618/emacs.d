@@ -10,6 +10,7 @@
 (define-key evil-normal-state-map (kbd "C-u M-]") 'helm-gtags-find-symbol)
 (define-key evil-normal-state-map (kbd "C-t") 'helm-gtags-pop-stack)
 (define-key evil-normal-state-map (kbd "M-.") 'helm-gtags-find-tag-from-here)
+(define-key evil-normal-state-map (kbd "C-p") 'helm-gtags-find-files)
 
 ;; (eval-after-load 'evail-maps
 ;;   '(define-key evil-normal-state-map (kbd "M-.") nil))
