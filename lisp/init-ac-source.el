@@ -18,13 +18,21 @@
               (mapcar (lambda (item) (concat "-I" item))
                       (split-string
                        "
- /usr/include/c++/6.1.1
- /usr/include/c++/6.1.1/x86_64-pc-linux-gnu
- /usr/include/c++/6.1.1/backward
- /usr/lib/gcc/x86_64-pc-linux-gnu/6.1.1/include
+ /usr/include/c++/6.2.1
+ /usr/include/c++/6.2.1/x86_64-pc-linux-gnu
+ /usr/include/c++/6.2.1/backward
+ /usr/lib/gcc/x86_64-pc-linux-gnu/6.2.1/include
  /usr/local/include
- /usr/lib/gcc/x86_64-pc-linux-gnu/6.1.1/include-fixed
+ /usr/lib/gcc/x86_64-pc-linux-gnu/6.2.1/include-fixed
  /usr/include
+
+ ;; /usr/include/c++/6.1.1
+ ;; /usr/include/c++/6.1.1/x86_64-pc-linux-gnu
+ ;; /usr/include/c++/6.1.1/backward
+ ;; /usr/lib/gcc/x86_64-pc-linux-gnu/6.1.1/include
+ ;; /usr/local/include
+ ;; /usr/lib/gcc/x86_64-pc-linux-gnu/6.1.1/include-fixed
+ ;; /usr/include
 "
                        ))))
 (defun my-ac-cc-mode-setup ()

@@ -56,6 +56,7 @@
 
 ;(require 'init-recentf)
 ;(require 'init-ido)
+;(require 'init-yasnippet)
 (require 'init-helm)
 ;(require 'init-hippie-expand)
 (require 'init-auto-complete)
