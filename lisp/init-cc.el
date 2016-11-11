@@ -23,7 +23,8 @@
   (c-toggle-hungry-state t)
   (which-function-mode t)
   (modify-syntax-entry ?_ "w")
-  (helm-gtags-mode t))
+  (helm-gtags-mode t)
+  (semantic-mode t))
 
 
 (add-hook 'c-mode-hook 'my-c-mode-common-hook)
