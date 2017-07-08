@@ -4,6 +4,11 @@
 (evil-mode 1)
 ;(setq evil-default-state 'emacs)
 
+(define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+(define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+(define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+(define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+
 (define-key evil-normal-state-map (kbd "C-]") 'helm-gtags-find-tag)
 (define-key evil-normal-state-map (kbd "C-u C-]") 'helm-gtags-find-tag-other-window)
 (define-key evil-normal-state-map (kbd "M-]") 'helm-gtags-find-rtag)
