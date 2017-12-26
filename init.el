@@ -59,7 +59,7 @@
 ;(require 'init-yasnippet)
 (require 'init-helm)
 ;(require 'init-hippie-expand)
-(require 'init-auto-complete)
+;; (require 'init-auto-complete)
 ;; (require 'init-windows)
 ;; (require 'init-sessions)
 ;(require 'init-fonts)
@@ -74,6 +74,7 @@
 ;(require 'init-git)
 (require 'init-cc)
 (require 'init-python)
+(require 'init-company)
 
 ;; (require 'init-crontab)
 ;; (require 'init-textile)

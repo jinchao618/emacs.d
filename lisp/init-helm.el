@@ -12,8 +12,9 @@
 
 (helm-mode t)
 (projectile-mode)
-(setq projectile-indexing-method 'native)
-(setq projectile-enable-caching t)
+;; (setq projectile-indexing-method 'native)
+;; (setq projectile-indexing-method 'alien)
+;; (setq projectile-enable-caching t)
 (helm-projectile-on)
 
 (define-key helm-map "<escape>" 'helm-keyboard-quit)

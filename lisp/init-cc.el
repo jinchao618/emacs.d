@@ -24,7 +24,9 @@
   (which-function-mode t)
   (modify-syntax-entry ?_ "w")
   (helm-gtags-mode t)
-  (semantic-mode t))
+  (semantic-mode t)
+  (ycmd-mode t)
+  (company-mode t))
 
 
 (add-hook 'c-mode-hook 'my-c-mode-common-hook)
