@@ -15,6 +15,7 @@
 ;; (setq projectile-indexing-method 'native)
 ;; (setq projectile-indexing-method 'alien)
 ;; (setq projectile-enable-caching t)
+(setq projectile-svn-command "find . -type f -print0")
 (helm-projectile-on)
 
 (define-key helm-map "<escape>" 'helm-keyboard-quit)
