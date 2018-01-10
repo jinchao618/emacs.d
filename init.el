@@ -74,8 +74,8 @@
 ;(require 'init-git)
 (require 'init-cc)
 (require 'init-python)
-;; (require 'init-company-ycmd)
-(require 'init-company-irony)
+(require 'init-company-ycmd)
+;; (require 'init-company-irony)
 
 ;; (require 'init-crontab)
 ;; (require 'init-textile)

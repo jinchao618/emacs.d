@@ -2,16 +2,20 @@
 
 (require 'company-ycmd)
 (company-ycmd-setup)
-(set-variable 'ycmd-server-command '("python2" "/home/jinchao/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/"))
+(set-variable 'ycmd-server-command '("python" "/home/jinchao/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/"))
 
-(global-company-mode 1)
 ;; (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
 ;; (setq company-backends (delete 'company-semantic company-backends))
 ;; (eval-after-load 'company
 ;;   '(add-to-list
 ;;     'company-backends 'company-ycmd))
-(add-hook 'c++-mode-hook 'ycmd-mode)
-(add-hook 'c-mode-hook 'ycmd-mode)
-(add-hook 'objc-mode-hook 'ycmd-mode)
+(defun my-ycmd-common-hook()
+  (company-mode t)
+  (ycmd-mode t))
+
+(add-hook 'c++-mode-hook 'my-ycmd-common-hook)
+(add-hook 'c-mode-hook 'my-ycmd-common-hook)
+(add-hook 'objc-mode-hook 'my-ycmd-common-hook)
+(add-hook 'emacs-lisp-mode-hook 'my-ycmd-common-hook)
 
 (provide 'init-company-ycmd)

@@ -100,6 +100,10 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 (global-page-break-lines-mode)
 (diminish 'page-break-lines-mode)
 
+;; semantic stickyfnc enhance
+(require-package 'stickyfunc-enhance)
+(require-package 'srefactor)
+
 ;; enable subword-mode
 ;; (global-subword-mode t)
 
