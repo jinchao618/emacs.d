@@ -1,107 +1,126 @@
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
+;; -*- lexical-binding: t -*-
+;;(setq debug-on-error t)
+
+;;; This file bootstraps the configuration, which is divided into
+;;; a number of other files.
+
+(let ((minver "24.3"))
+  (when (version< emacs-version minver)
+    (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
+(when (version< emacs-version "24.5")
+  (message "Your Emacs is old, and some functionality in this config will be disabled. Please upgrade if possible."))
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+;; (require 'init-benchmarking) ;; Measure startup time
 
 (defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
 (defconst *is-a-mac* (eq system-type 'darwin))
 
 ;;----------------------------------------------------------------------------
+;; Adjust garbage collection thresholds during startup, and thereafter
+;;----------------------------------------------------------------------------
+;; (let ((normal-gc-cons-threshold (* 20 1024 1024))
+;;       (init-gc-cons-threshold (* 128 1024 1024)))
+;;   (setq gc-cons-threshold init-gc-cons-threshold)
+;;   (add-hook 'emacs-startup-hook
+;;             (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
+
+;;----------------------------------------------------------------------------
 ;; Bootstrap config
 ;;----------------------------------------------------------------------------
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-;; (require 'init-compat)
 (require 'init-utils)
-
-;; Needed for Emacs version < 24. must come before elpa, as it may provide package.el
-;; (require 'init-site-lisp)
-
-;; Security configuration.
-;; This is commented out by default, but for security considerations
-;; I strongly recommend you to uncomment it.
-;; You may need `gnutls' library and the `certifi' python package to enable this.
-;; see the comment in `init-security.el'
-;; (require 'init-security)
-
-;; Machinery for installing required packages.
-;; explicitly call 'package-initialize to set up all packages installed via ELPA.
-;; should come before all package-related config files
-(require 'init-elpa)
+(require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
+;; Calls (package-initialize)
+(require 'init-elpa)      ;; Machinery for installing required packages
 (require 'init-exec-path) ;; Set up $PATH
-;(require 'init-packages)
-;(require 'init-exec)
+
+;;----------------------------------------------------------------------------
+;; Allow users to provide an optional "init-preload-local.el"
+;;----------------------------------------------------------------------------
+(require 'init-preload-local nil t)
+
 ;;----------------------------------------------------------------------------
 ;; Load configs for specific features and modes
 ;;----------------------------------------------------------------------------
 
 ;; (require-package 'wgrep)
-;; (require-package 'project-local-variables)
 ;; (require-package 'diminish)
 ;; (require-package 'scratch)
-;; (require-package 'mwe-log-commands)
+;; (require-package 'command-log-mode)
 
 ;; (require 'init-frame-hooks)
 ;; (require 'init-xterm)
+;; (require 'init-themes)
 ;; (require 'init-osx-keys)
 ;; (require 'init-gui-frames)
-;; (require 'init-proxies)
-;(require 'init-dired)
+;; (require 'init-dired)
 ;; (require 'init-isearch)
+;; (require 'init-grep)
 ;; (require 'init-uniquify)
 ;; (require 'init-ibuffer)
 ;; (require 'init-flycheck)
 
 ;(require 'init-recentf)
-;(require 'init-ido)
-;(require 'init-yasnippet)
+;(require 'init-smex)
+;(require 'init-ivy)
 (require 'init-helm)
 ;(require 'init-hippie-expand)
-;; (require 'init-auto-complete)
+;; (require 'init-company)
 ;; (require 'init-windows)
 ;; (require 'init-sessions)
 ;(require 'init-fonts)
 ;; (require 'init-mmm)
-;(require 'init-tabbar)
+
 (require 'init-editing-utils)
 (require 'init-evil)
-;(require 'init-matlab)
-;(require 'init-gtags)
-;; (require 'init-vc)
-;; (require 'init-darcs)
-;(require 'init-git)
 (require 'init-cc)
 (require 'init-python)
 (require 'init-company-ycmd)
-;; (require 'init-company-irony)
 
-;; (require 'init-crontab)
+;; (require 'init-whitespace)
+
+;; (require 'init-vc)
+;; (require 'init-darcs)
+;; (require 'init-git)
+;; (require 'init-github)
+
+;; (require 'init-projectile)
+
+;; (require 'init-compile)
+;;(require 'init-crontab)
 ;; (require 'init-textile)
-;(require 'init-markdown)
-(require 'init-auctex)
+;; (require 'init-markdown)
 ;; (require 'init-csv)
 ;; (require 'init-erlang)
 ;; (require 'init-javascript)
 ;; (require 'init-php)
-;(require 'init-org)
+;; (require 'init-org)
 ;; (require 'init-nxml)
 ;; (require 'init-html)
 ;; (require 'init-css)
 ;; (require 'init-haml)
-;; (require 'init-python-mode)
-;(require 'init-haskell)
-;; (require 'init-ruby-mode)
+;; (require 'init-http)
+;; (require 'init-python)
+;; (require 'init-haskell)
+;; (require 'init-elm)
+;; (require 'init-purescript)
+;; (require 'init-ruby)
 ;; (require 'init-rails)
 ;; (require 'init-sql)
+;; (require 'init-rust)
+;; (require 'init-toml)
+;; (require 'init-yaml)
+;; (require 'init-docker)
+;; (require 'init-terraform)
+;;(require 'init-nix)
+;; (maybe-require-package 'nginx-mode)
 
 ;; (require 'init-paredit)
 ;; (require 'init-lisp)
 ;; (require 'init-slime)
 ;; (require 'init-clojure)
-;; (when (>= emacs-major-version 24)
-;;   (require 'init-clojure-cider))
+;; (require 'init-clojure-cider)
 ;; (require 'init-common-lisp)
 
 ;; (when *spell-check-support-enabled*
@@ -110,9 +129,13 @@
 ;; (require 'init-marmalade)
 ;; (require 'init-misc)
 
+;; (require 'init-folding)
 ;; (require 'init-dash)
+
+;;(require 'init-twitter)
+;; (require 'init-mu)
 ;; (require 'init-ledger)
-;; ;; Extra packages which don't require any configuration
+;; Extra packages which don't require any configuration
 
 ;; (require-package 'gnuplot)
 ;; (require-package 'lua-mode)
@@ -120,9 +143,12 @@
 ;; (require-package 'dsvn)
 ;; (when *is-a-mac*
 ;;   (require-package 'osx-location))
-;; (require-package 'regex-tool)
+;; (unless (eq system-type 'windows-nt)
+;;   (maybe-require-package 'daemons))
+;; (maybe-require-package 'dotenv-mode)
 
 (require 'init-themes)
+
 ;; ;;----------------------------------------------------------------------------
 ;; ;; Allow access from emacsclient
 ;; ;;----------------------------------------------------------------------------
@@ -139,23 +165,16 @@
 
 
 ;;----------------------------------------------------------------------------
-;; Allow users to provide an optional "init-local" containing personal settings
+;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
-(when (file-exists-p (expand-file-name "init-local.el" user-emacs-directory))
-  (error "Please move init-local.el to ~/.emacs.d/lisp"))
-;(require 'init-local nil t)
-;(require 'init-local)
-;; make tab key do indent first then completion.
-
-;; ;;----------------------------------------------------------------------------
-;; ;; Locales (setting them earlier in this file doesn't work in X)
-;; ;;----------------------------------------------------------------------------
 ;; (require 'init-locales)
 
-;; (add-hook 'after-init-hook
-;;            (lambda ()
-;;              (message "init completed in %.2fms"
-;;                       (sanityinc/time-subtract-millis after-init-time before-init-time))))
+
+;;----------------------------------------------------------------------------
+;; Allow users to provide an optional "init-local" containing personal settings
+;;----------------------------------------------------------------------------
+;; (require 'init-local nil t)
+
 
 
 (provide 'init)

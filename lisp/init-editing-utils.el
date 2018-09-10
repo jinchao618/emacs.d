@@ -1,7 +1,7 @@
 (add-to-list 'load-path (expand-file-name "lisp/editing-utils" user-emacs-directory))
 ;; enhanced help mechanism
-(require-package 'help-fns+)
-(require 'help-fns+)
+;; (require-package 'help-fns+)
+;; (require 'help-fns+)
 
 ;; dimish minor mode name to save mode line space
 (require-package 'diminish)
@@ -57,7 +57,7 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
   (move-end-of-line 1)
   (newline-and-indent))
 
-(global-set-key (kbd "<S-return>") 'sanityinc/newline-at-end-of-line)
+(global-set-key (kbd "S-<return>") 'sanityinc/newline-at-end-of-line)
 
 ;; change yes-or-no to y-or-n
 ;; (fset 'yes-or-no-p 'y-or-n-p)
@@ -115,10 +115,10 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 ;; (global-set-key (kbd "C-+") 'mc/mark-next-like-this)
 ;; (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 ;; From active region to multiple cursors:
-;; (global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
-;; (global-set-key (kbd "C-c c c") 'mc/edit-lines)
-;; (global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
-;; (global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
+;; (global-set-key (kbd "C-c m r") 'set-rectangular-region-anchor)
+;; (global-set-key (kbd "C-c m c") 'mc/edit-lines)
+;; (global-set-key (kbd "C-c m e") 'mc/edit-ends-of-lines)
+;; (global-set-key (kbd "C-c m a") 'mc/edit-beginnings-of-lines)
 
 ;; switch-window
 ;(require 'init-switch-window)
@@ -141,7 +141,7 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 ;(require 'init-flex-isearch)
 
 ;; set some compilation shortcuts
-(require 'init-compile)
+;;(require 'init-compile)
 
 ;; spell checking
 ;; (when (executable-find "hunspell")
