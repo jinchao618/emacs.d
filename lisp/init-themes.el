@@ -10,12 +10,22 @@
 ;(setq-default custom-enabled-themes '(sanitynic-tomorrow-bright))
 
 ;; Ensure that themes will be applied even if they have not been customized
+;; (if (display-graphic-p)
+;;     ;; (enable-theme '(hc-zenburn))
+;;     (enable-theme 'sanityinc-solarized-dark)
+;;   (enable-theme '(sanityinc-solarized-dark)))
+;; (defun reapply-themes ()
+;;   "Forcibly load the themes listed in `custom-enabled-themes'."
+;;   (dolist (theme custom-enabled-themes)
+;;     (unless (custom-theme-p theme)
+;;       (load-theme theme)))
+;;   (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
+
 (defun reapply-themes ()
-  "Forcibly load the themes listed in `custom-enabled-themes'."
-  (dolist (theme custom-enabled-themes)
-    (unless (custom-theme-p theme)
-      (load-theme theme)))
-  (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
+  ;; different theme for terminal and graphic
+  (if (display-graphic-p)
+      (load-theme 'hc-zenburn)
+    (load-theme 'sanityinc-solarized-dark)))
 
 (add-hook 'after-init-hook 'reapply-themes)
 
