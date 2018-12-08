@@ -5,7 +5,8 @@
 ;(require-package 'color-theme-sanityinc-tomorrow)
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d/elpa/color-theme-sanityinc-solarized-20160429.1903")
 ;; themes list, 1st is for graphic, 2nd is for terminal
-(setq-default custom-enabled-themes '(hc-zenburn sanityinc-solarized-dark))
+;; (setq-default custom-enabled-themes '(hc-zenburn sanityinc-solarized-dark))
+(setq-default custom-enabled-themes '(hc-zenburn hc-zenburn))
 
 ;; Ensure that themes will be applied even if they have not been customized
 (defun reapply-themes ()
