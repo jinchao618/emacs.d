@@ -80,6 +80,7 @@
 ;; (require 'init-company-irony)
 (require 'init-auctex)
 (require 'init-verilog)
+(require 'init-julia)
 
 ;; (require 'init-whitespace)
 
