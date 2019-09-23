@@ -19,6 +19,7 @@
 ;; (setq projectile-enable-caching t)
 (setq projectile-svn-command "find . -type f -print0")
 (helm-projectile-on)
+(setq helm-ag-always-set-extra-option t)
 
 (define-key helm-map "<escape>" 'helm-keyboard-quit)
 
