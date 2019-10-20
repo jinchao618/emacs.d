@@ -1,24 +1,35 @@
-; python-mode
-;(setq py-install-directory "~/.emacs.d/python-mode-6.0.11")
-;(add-to-list 'load-path py-install-directory)
-(require-package 'python-mode)
-;(require-package 'realgud)
-(require 'python-mode)
+;;; init-python.el --- Python editing -*- lexical-binding: t -*-
+;;; Commentary:
+;;; Code:
 
-; use IPython
-;(setq-default py-shell-name "ipython")
-;(setq-default py-which-bufname "IPython")
-; use the wx backend, for both mayavi and matplotlib
-;(setq py-python-command-args
-;  '("--gui=wx" "--pylab=wx" "-colors" "Linux"))
-;(setq py-force-py-shell-name-p t)
 
-; switch to the interpreter after executing code
-(setq py-shell-switch-buffers-on-execute-p t)
-;(setq py-switch-buffers-on-execute-p t)
-; don't split windows
-(setq py-split-windows-on-execute-p nil)
-; try to automagically figure out indentation
-(setq py-smart-indentation t)
+;; See the following note about how I set up python + virtualenv to
+;; work seamlessly with Emacs:
+;; https://gist.github.com/purcell/81f76c50a42eee710dcfc9a14bfc7240
+
+
+(setq auto-mode-alist
+      (append '(("SConstruct\\'" . python-mode)
+                ("SConscript\\'" . python-mode))
+              auto-mode-alist))
+
+(require-package 'pip-requirements)
+
+(when (maybe-require-package 'anaconda-mode)
+  (after-load 'python
+    ;; Anaconda doesn't work on remote servers without some work, so
+    ;; by default we enable it only when working locally.
+    (add-hook 'python-mode-hook
+              (lambda () (unless (file-remote-p default-directory)
+                      (anaconda-mode 1))))
+    (add-hook 'anaconda-mode-hook 'anaconda-eldoc-mode))
+  (after-load 'anaconda-mode
+    (define-key anaconda-mode-map (kbd "M-?") nil))
+  (when (maybe-require-package 'company-anaconda)
+    (after-load 'company
+      (after-load 'python
+        (push 'company-anaconda company-backends)))))
+
 
 (provide 'init-python)
+;;; init-python.el ends here

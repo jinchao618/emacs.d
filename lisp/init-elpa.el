@@ -1,11 +1,11 @@
+;;; init-elpa.el --- Settings and helpers for package.el -*- lexical-binding: t -*-
+;;; Commentary:
+;;; Code:
+
 (require 'package)
 
 
 ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
-(let ((versioned-package-dir
-       (expand-file-name (format "elpa-%s.%s" emacs-major-version emacs-minor-version)
-                         user-emacs-directory)))
-  (setq package-user-dir versioned-package-dir))
 
 
 
@@ -17,37 +17,31 @@
   (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
   ;; Official MELPA Mirror, in case necessary.
   ;;(add-to-list 'package-archives (cons "melpa-mirror" (concat proto "://www.mirrorservice.org/sites/melpa.org/packages/")) t)
-  (if (< emacs-major-version 24)
-      ;; For important compatibility libraries like cl-lib
-      (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))
-    (unless no-ssl
-      ;; Force SSL for GNU ELPA
-      (setcdr (assoc "gnu" package-archives) "https://elpa.gnu.org/packages/"))))
+  )
 
-;; We include the org repository for completeness, but don't normally
-;; use it.
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-
+
+;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
+(when (and (version< emacs-version "26.3") (boundp 'libgnutls-version) (>= libgnutls-version 30604))
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 
 ;;; On-demand installation of packages
 
-(defvar sanityinc/required-packages nil)
+(require 'cl-lib)
 
 (defun require-package (package &optional min-version no-refresh)
   "Install given PACKAGE, optionally requiring MIN-VERSION.
 If NO-REFRESH is non-nil, the available package lists will not be
 re-downloaded in order to locate PACKAGE."
-  (let ((available
-         (or (package-installed-p package min-version)
-             (if (or (assoc package package-archive-contents) no-refresh)
-                 (package-install package)
-               (progn
-                 (package-refresh-contents)
-                 (require-package package min-version t))))))
-    (prog1 available
-      (when (and available (boundp 'package-selected-packages))
-        (add-to-list 'sanityinc/required-packages package)))))
+  (or (package-installed-p package min-version)
+      (let* ((known (cdr (assoc package package-archive-contents)))
+             (versions (mapcar #'package-desc-version known)))
+        (if (cl-find-if (lambda (v) (version-list-<= min-version v)) versions)
+            (package-install package)
+          (if no-refresh
+              (error "No version of %s >= %S is available" package min-version)
+            (package-refresh-contents)
+            (require-package package min-version t))))))
 
 (defun maybe-require-package (package &optional min-version no-refresh)
   "Try to install PACKAGE, and return non-nil if successful.
@@ -67,9 +61,22 @@ locate PACKAGE."
 (setq package-enable-at-startup nil)
 (package-initialize)
 
+
 ;; package.el updates the saved version of package-selected-packages correctly only
 ;; after custom-file has been loaded, which is a bug. We work around this by adding
 ;; the required packages to package-selected-packages after startup is complete.
+
+(defvar sanityinc/required-packages nil)
+
+(defun sanityinc/note-selected-package (oldfun package &rest args)
+  "If OLDFUN reports PACKAGE was successfully installed, note it in `sanityinc/required-packages'."
+  (let ((available (apply oldfun package args)))
+    (prog1 available
+      (when (and available (boundp 'package-selected-packages))
+        (add-to-list 'sanityinc/required-packages package)))))
+
+(advice-add 'require-package :around 'sanityinc/note-selected-package)
+
 (when (fboundp 'package--save-selected-packages)
   (require-package 'seq)
   (add-hook 'after-init-hook
@@ -81,9 +88,9 @@ locate PACKAGE."
 (fullframe list-packages quit-window)
 
 
-(require-package 'cl-lib)
-(require 'cl-lib)
+(require-package 'gnu-elpa-keyring-update)
 
+
 (defun sanityinc/set-tabulated-list-column-width (col-name width)
   "Set any column with name COL-NAME to the given WIDTH."
   (when (> width (length col-name))
@@ -102,3 +109,4 @@ locate PACKAGE."
 
 
 (provide 'init-elpa)
+;;; init-elpa.el ends here

@@ -76,7 +76,7 @@
 (require 'init-evil)
 (require 'init-cc)
 (require 'init-python)
-(require 'init-company-ycmd)
+;; (require 'init-company-ycmd)
 ;; (require 'init-company-irony)
 (require 'init-auctex)
 (require 'init-verilog)
@@ -91,7 +91,7 @@
 
 ;; (require 'init-projectile)
 
-;; (require 'init-compile)
+;;; (require 'init-compile)
 ;;(require 'init-crontab)
 ;; (require 'init-textile)
 ;; (require 'init-markdown)

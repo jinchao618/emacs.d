@@ -36,7 +36,6 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 (set-scroll-bar-mode nil)
 (tool-bar-mode 0)
 
-
 ;; auto-revert
 (global-auto-revert-mode)
 (setq global-auto-revert-non-file-buffers t

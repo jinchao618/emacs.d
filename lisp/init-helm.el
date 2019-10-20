@@ -4,7 +4,7 @@
 
 (require-package 'helm-projectile)
 
-(require-package 'helm-gtags)
+;; (require-package 'helm-gtags)
 
 (require 'helm-config)
 (require 'helm-projectile)
