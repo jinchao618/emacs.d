@@ -2,7 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-
 ;; See the following note about how I set up python + virtualenv to
 ;; work seamlessly with Emacs:
 ;; https://gist.github.com/purcell/81f76c50a42eee710dcfc9a14bfc7240
@@ -25,6 +24,8 @@
     (add-hook 'anaconda-mode-hook 'anaconda-eldoc-mode))
   (after-load 'anaconda-mode
     (define-key anaconda-mode-map (kbd "M-?") nil))
+  (after-load 'anaconda-mode
+    (setq python-indent-offset 4))
   (when (maybe-require-package 'company-anaconda)
     (after-load 'company
       (after-load 'python
