@@ -76,7 +76,7 @@
 (require 'init-evil)
 (require 'init-cc)
 (require 'init-python)
-;; (require 'init-company-ycmd)
+(require 'init-company-ycmd)
 ;; (require 'init-company-irony)
 (require 'init-auctex)
 (require 'init-verilog)
