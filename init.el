@@ -80,6 +80,7 @@
 ;; (require 'init-company-irony)
 (require 'init-auctex)
 (require 'init-verilog)
+(require 'init-ediff)
 ;; (require 'init-julia)
 
 ;; (require 'init-whitespace)
@@ -166,7 +167,6 @@
 ;;----------------------------------------------------------------------------
 (when (file-exists-p custom-file)
   (load custom-file))
-
 
 ;;----------------------------------------------------------------------------
 ;; Locales (setting them earlier in this file doesn't work in X)

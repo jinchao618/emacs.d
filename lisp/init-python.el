@@ -24,6 +24,7 @@
     (add-hook 'anaconda-mode-hook 'anaconda-eldoc-mode))
   (after-load 'anaconda-mode
     (define-key anaconda-mode-map (kbd "M-?") nil))
+  (setq python-indent-offset 4)
   (after-load 'anaconda-mode
     (setq python-indent-offset 4))
   (when (maybe-require-package 'company-anaconda)
