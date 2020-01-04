@@ -20,14 +20,20 @@
   ;;(c-set-offset 'arglist-intro 'c-lineup-arglist-intro-after-paren)
   ;;(c-set-offset 'arglist-close 'c-lineup-arglist-close-under-paren)
   (c-set-offset 'inline-open 0)
+  (c-set-offset 'substatement-open '0)
+  (c-set-offset 'innamespace [0])
   (c-toggle-hungry-state t)
   (which-function-mode t)
   (modify-syntax-entry ?_ "w")
-  (helm-gtags-mode t)
+  ;; (helm-gtags-mode t)
   (hs-minor-mode)
+
+  ;; semantic-stikyfunc-mode
   (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
   (semantic-mode 1)
   (require 'stickyfunc-enhance)
+
+  ;; TODO: seems not work
   (require 'srefactor)
   (define-key c-mode-map (kbd "M-RET") 'srefactor-refactor-at-point)
   (define-key c++-mode-map (kbd "M-RET") 'srefactor-refactor-at-point)
