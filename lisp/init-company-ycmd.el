@@ -3,6 +3,8 @@
 (require 'company-ycmd)
 (company-ycmd-setup)
 (set-variable 'ycmd-server-command '("python" "/home/jinchao/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/"))
+(set-variable 'ycmd-startup-timeout' 10)
+(set-variable 'ycmd-global-config "../ycm_extra_conf.py")
 
 (setq company-backends (delete 'company-semantic company-backends))
 (eval-after-load 'company

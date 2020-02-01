@@ -21,7 +21,7 @@
   ;;(c-set-offset 'arglist-close 'c-lineup-arglist-close-under-paren)
   (c-set-offset 'inline-open 0)
   (c-set-offset 'substatement-open '0)
-  (c-set-offset 'innamespace [0])
+  (c-set-offset 'innamespace '0)
   (c-toggle-hungry-state t)
   (which-function-mode t)
   (modify-syntax-entry ?_ "w")
