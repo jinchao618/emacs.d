@@ -32,6 +32,43 @@
           ("\\.pdf\\'" . default))))
 )
 
+(require-package 'org-download)
+(require 'org-download)
+
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
+
+;; (setq-default org-download-display-inline-images nil)
+;; (setq-default org-download-heading-lvl nil)
+
+;; (defun org-insert-clipboard-image (&optional file)
+(defun my-org-insert-clipboard-image ()
+  ;; (interactive "F")
+  (interactive)
+  (setq foldername (concat "./" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) "_IMG/"))
+  ;; (setq foldername (concat "./" "IMG/"))
+  (if (not (file-exists-p foldername))
+      (mkdir foldername))
+
+  (setq imgName (concat "img_" (format-time-string "%Y_%m_%d__%H_%M_%S") ".png"))
+  ;; (setq imgPath (cocat (buffer-file-name) "IMG/" imgName))
+
+  (setq relativeFilename (concat foldername imgName))
+
+  (if *is-a-mac*
+      (shell-command (concat "pngpaste " relativeFilename))
+    (shell-command (concat "xclip -selection clipboard -t image/png -o > " relativeFilename)))
+
+  (insert (concat "[[" relativeFilename "]]"))
+  ;; (org-display-inline-images)
+  )
+
+(defun my-org-download-image (link)
+  ;; (interactive)
+  (interactive "sUrl: ")
+  (setq-default org-download-image-dir (concat "./" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) "_IMG/"))
+  (org-download-image link)
+  )
 ;; (when *is-a-mac*
 ;;   (maybe-require-package 'grab-mac-link))
 

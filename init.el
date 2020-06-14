@@ -86,7 +86,7 @@
 (require 'init-auctex)
 (require 'init-verilog)
 (require 'init-ediff)
-;; (require 'init-julia)
+(require 'init-julia)
 
 ;; (require 'init-whitespace)
 
