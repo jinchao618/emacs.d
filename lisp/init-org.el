@@ -45,8 +45,8 @@
 (defun my-org-insert-clipboard-image ()
   ;; (interactive "F")
   (interactive)
-  (setq foldername (concat "./" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) "_IMG/"))
-  ;; (setq foldername (concat "./" "IMG/"))
+  ;; (setq foldername (concat "./" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) "_IMG/"))
+  (setq foldername org-download-image-dir)
   (if (not (file-exists-p foldername))
       (mkdir foldername))
 
@@ -59,16 +59,16 @@
       (shell-command (concat "pngpaste " relativeFilename))
     (shell-command (concat "xclip -selection clipboard -t image/png -o > " relativeFilename)))
 
-  (insert (concat "[[" relativeFilename "]]"))
+  (insert (concat "[[file:" relativeFilename "]]"))
   ;; (org-display-inline-images)
   )
 
-(defun my-org-download-image (link)
-  ;; (interactive)
-  (interactive "sUrl: ")
-  (setq-default org-download-image-dir (concat "./" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) "_IMG/"))
-  (org-download-image link)
-  )
+;; (defun my-org-download-image (link)
+;;   ;; (interactive)
+;;   (interactive "sUrl: ")
+;;   (setq-default org-download-image-dir (concat "./" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) "_IMG/"))
+;;   (org-download-image link)
+;;   )
 ;; (when *is-a-mac*
 ;;   (maybe-require-package 'grab-mac-link))
 
