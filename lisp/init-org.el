@@ -38,7 +38,8 @@
 ;; Drag-and-drop to `dired`
 (add-hook 'dired-mode-hook 'org-download-enable)
 
-;; (setq-default org-download-display-inline-images nil)
+(setq-default org-download-display-inline-images nil)
+(setq org-startup-indented t)
 ;; (setq-default org-download-heading-lvl nil)
 
 ;; (defun org-insert-clipboard-image (&optional file)
