@@ -157,7 +157,7 @@
 ;;   (maybe-require-package 'daemons))
 ;; (maybe-require-package 'dotenv-mode)
 
-(require 'init-themes)
+;; (require 'init-themes)
 
 ;; ;;----------------------------------------------------------------------------
 ;; ;; Allow access from emacsclient
