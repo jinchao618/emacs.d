@@ -35,6 +35,17 @@
 (require-package 'org-download)
 (require 'org-download)
 
+;; load and enable languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (python . t)
+   ;; (ipython . t)
+   ;; (sh . t)
+   (shell . t)
+   ;; Include other languages here...
+   ))
+
 ;; Drag-and-drop to `dired`
 (add-hook 'dired-mode-hook 'org-download-enable)
 
