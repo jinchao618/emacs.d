@@ -63,7 +63,13 @@
   (if (not (file-exists-p foldername))
       (mkdir foldername))
 
-  (setq imgName (concat "img_" (format-time-string "%Y_%m_%d__%H_%M_%S") ".png"))
+  (setq inputName (read-string "File name:"))
+  (if (equal inputName "")
+      (setq inputName (format-time-string "%Y_%m_%d__%H_%M_%S")))
+
+  (setq imgName (concat "img_" inputName ".png"))
+
+  ;; (setq imgname (concat "img_" (format-time-string "%y_%m_%d__%h_%m_%s") ".png"))
   ;; (setq imgPath (cocat (buffer-file-name) "IMG/" imgName))
 
   (setq relativeFilename (concat foldername imgName))
