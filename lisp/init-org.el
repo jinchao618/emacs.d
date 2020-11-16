@@ -52,6 +52,7 @@
 (setq-default org-download-display-inline-images nil)
 (setq-default org-image-actual-width nil)
 ;; (setq-default org-download-heading-lvl nil)
+(setq-default org-list-allow-alphabetical t)
 (setq org-startup-indented t)
 
 ;; (defun org-insert-clipboard-image (&optional file)
@@ -79,7 +80,7 @@
     (shell-command (concat "xclip -selection clipboard -t image/png -o > " relativeFilename)))
 
   (insert (concat "[[file:" relativeFilename "]]"))
-  ;; (org-display-inline-images)
+  (org-display-inline-images)
   )
 
 ;; (defun my-org-download-image (link)
