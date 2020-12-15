@@ -20,4 +20,8 @@
 ;; (eval-after-load 'evail-maps
 ;;   '(define-key evil-normal-state-map (kbd "M-.") nil))
 
+;; reset undo syste to undo-tree
+;; could be deprecated for Emacs beyond v.28
+(evil-set-undo-system 'undo-tree)
+
 (provide 'init-evil)
