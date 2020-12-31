@@ -22,6 +22,35 @@
 
 ;;; Code:
 
+(require 'org-tempo)
+;; (require 'ox-latex)
+
+;; config listings for source block
+;; below line is depreciated by including package in org_header.org
+;; (add-to-list 'org-latex-packages-alist '("" "listings" nil))
+;; (setq org-latex-listings 'listings)
+;; (setq org-latex-listings-options '(("breaklines" "true")
+;;                                    ("frame" "lines")
+;;                                    ("basicstyle" "\\footnotesize")
+;;                                    ;; ("numbers" "left")
+;;                                    ;; ("numberstyle" "\\tiny")
+;;                                    ))
+
+;; config minted for source block
+(setq org-latex-listings 'minted)
+(setq org-latex-custom-lang-environments
+      '(
+        (emacs-lisp "common-lispcode")
+        ))
+(setq org-latex-minted-options
+      '(("frame" "lines")
+        ("fontsize" "\\scriptsize")
+        ("breaklines" "true")
+        ;; ("linenos" "")
+        ))
+(setq org-latex-to-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
 ;; (when (not (eq system-type 'darwin))
 (when (not *is-a-mac*)
   (setq org-file-apps
