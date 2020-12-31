@@ -23,7 +23,7 @@
 ;;; Code:
 
 (require 'org-tempo)
-;; (require 'ox-latex)
+(require 'ox-latex)
 
 ;; config listings for source block
 ;; below line is depreciated by including package in org_header.org
@@ -48,8 +48,10 @@
         ("breaklines" "true")
         ;; ("linenos" "")
         ))
-(setq org-latex-to-pdf-process
-      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+(setq org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
 ;; (when (not (eq system-type 'darwin))
 (when (not *is-a-mac*)
