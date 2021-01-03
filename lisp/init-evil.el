@@ -22,7 +22,6 @@
 
 ;; reset undo syste to undo-tree
 ;; could be deprecated for Emacs beyond v.28
-(if *is-a-mac*
-    (evil-set-undo-system 'undo-tree))
+(evil-set-undo-system 'undo-tree)
 
 (provide 'init-evil)

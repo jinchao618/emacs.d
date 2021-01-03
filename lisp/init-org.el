@@ -53,6 +53,33 @@
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
+;; config org-ref, but doesn't work properly for HTML export
+;; (require-package 'org-ref)
+;; (require 'org-ref)
+;; (setq org-latex-prefer-user-labels t)
+;; (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+;; (use-package org-super-links
+;;   :bind (("C-c s s" . org-super-links-link)
+;; 	   ("C-c s l" . org-super-links-store-link)
+;; 	   ("C-c s C-l" . org-super-links-insert-link)))
+
+;; config org-super-link, it works but doesn't work as expected
+;; (require-package 'use-package)
+;; (require-package 'quelpa-use-package)
+;; (require 'quelpa-use-package)
+;; (require 'use-package)
+;; (use-package org-super-links
+;;   :quelpa (org-super-links :repo "toshism/org-super-links" :fetcher github :commit "develop")
+;;   :bind (("C-c s s" . org-super-links-link)
+;;          ("C-c s l" . org-super-links-store-link)
+;;          ("C-c s C-l" . org-super-links-insert-link)
+;;          ("C-c s d" . org-super-links-quick-insert-drawer-link)
+;;          ("C-c s i" . org-super-links-quick-insert-inline-link)
+;;          ("C-c s C-d" . org-super-links-delete-link))
+;;   :config
+;;   (setq org-super-links-related-into-drawer t
+;;   	org-super-links-link-prefix 'org-super-links-link-prefix-timestamp))
+
 ;; (when (not (eq system-type 'darwin))
 (when (not *is-a-mac*)
   (setq org-file-apps
