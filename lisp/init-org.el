@@ -58,10 +58,6 @@
 ;; (require 'org-ref)
 ;; (setq org-latex-prefer-user-labels t)
 ;; (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-;; (use-package org-super-links
-;;   :bind (("C-c s s" . org-super-links-link)
-;; 	   ("C-c s l" . org-super-links-store-link)
-;; 	   ("C-c s C-l" . org-super-links-insert-link)))
 
 ;; config org-super-link, it works but doesn't work as expected
 ;; (require-package 'use-package)
