@@ -53,6 +53,78 @@
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
+;; my org insert ref link and relative functions
+;; reused org-ref functions
+(defvar-local org-ref-labels '()
+  "Known labels Stores a list of strings.")
+
+(defvar org-ref-label-debug nil "If non-nil print debug messages.")
+
+(defvar org-ref-label-regexps
+  '(;; #+label:
+    ;; "^#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    "^\s*#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    ;; CUSTOM_ID in a heading
+    ":CUSTOM_ID:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    ;; #+name
+    "^\\s-*#\\+name:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    ;; radio targets
+    "<<\\(?1:[+a-zA-Z0-9:\\._-]*\\)>>"
+    ;; #+tblname:
+    "^\\s-*#\\+tblname:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    ;; label links
+    "label:\\(?1:[+a-zA-Z0-9:\\._-]*\\)"
+    ;; labels in latex
+    "\\\\label{\\(?1:[+a-zA-Z0-9:\\._-]*\\)}")
+  "List of regexps that are labels in org-ref.")
+
+(defun org-ref-add-labels (start end)
+  (interactive "r")
+  (save-excursion
+    (save-match-data
+      (cl-loop for rx in org-ref-label-regexps
+	       do
+	       (goto-char start)
+	       (while (re-search-forward rx end t)
+		 (let ((label (match-string-no-properties 1)))
+		   ;; I don't know why this gets found, but some labels are
+		   ;; empty strings. we don't store these.
+		   (unless (string= "" label)
+		     (with-silent-modifications
+		       (put-text-property (match-beginning 1)
+					  (match-end 1)
+					  'org-ref-label t)
+		       (put-text-property (match-beginning 1)
+					  (match-end 1)
+					  'rear-nonsticky '(org-ref-label)))
+
+		     (when org-ref-label-debug
+		       (message "oral: adding %s" label)
+		       (message "%S\n" org-ref-labels))
+		     (cl-pushnew label
+				 org-ref-labels :test 'string=)
+		     (when org-ref-label-debug
+		       (message "  oral: added %s" label)
+		       (message "  %S\n" org-ref-labels))
+		     ;; now store the last end so we can tell for the next run
+		     ;; if we are adding to a label.
+		     (setq org-ref-last-label-end end))))))))
+
+(defun org-ref-get-labels ()
+  (save-excursion
+    (org-ref-add-labels (point-min) (point-max)))
+  (reverse org-ref-labels))
+
+(defun my-org-insert-ref-link ()
+  (interactive)
+  (let ((labels (org-ref-get-labels)))
+    (helm :sources `(,(helm-build-sync-source "Existing labels"
+			:candidates labels
+			:action (lambda (label)
+				  (with-helm-current-buffer
+                                    (insert (format "[[%s]]" label))))))
+	  :buffer "*helm labels*")))
+
 ;; config org-ref, but doesn't work properly for HTML export
 ;; (require-package 'org-ref)
 ;; (require 'org-ref)
