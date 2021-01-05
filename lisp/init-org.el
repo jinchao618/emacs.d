@@ -125,6 +125,124 @@
                                     (insert (format "[[%s]]" label))))))
 	  :buffer "*helm labels*")))
 
+;;** context around org-ref links
+(defun org-ref-get-label-context (label)
+  "Return a string of context around a LABEL."
+  (save-excursion
+    (save-restriction
+      (widen)
+      (catch 'result
+	(goto-char (point-min))
+	(when (re-search-forward
+	       (format "label:%s\\b" label) nil t)
+	  (throw 'result (buffer-substring
+			  (progn
+			    (forward-line -1)
+			    (beginning-of-line)
+			    (point))
+			  (progn
+			    (forward-line 4)
+			    (point)))))
+
+	(goto-char (point-min))
+	(when (re-search-forward
+	       (format "\\label{%s}" label) nil t)
+	  (throw 'result (buffer-substring
+			  (progn
+			    (forward-line -1)
+			    (beginning-of-line)
+			    (point))
+			  (progn
+			    (forward-line 4)
+			    (point)))))
+
+	(goto-char (point-min))
+	(when (re-search-forward
+	       (format "^\\( \\)*#\\+label:\\s-*\\(%s\\)\\b" label) nil t)
+	  (throw 'result (buffer-substring
+			  (progn
+			    (forward-line -1)
+			    (beginning-of-line)
+			    (point))
+			  (progn
+			    (forward-line 4)
+			    (point)))))
+
+	(goto-char (point-min))
+	(when (re-search-forward
+	       (format "^\\( \\)*#\\+tblname:\\s-*\\(%s\\)\\b" label) nil t)
+	  (throw 'result (buffer-substring
+			  (progn
+			    (forward-line -1)
+			    (beginning-of-line)
+			    (point))
+			  (progn
+			    (forward-line 4)
+			    (point)))))
+
+	(goto-char (point-min))
+	(when (re-search-forward
+	       (format "^\\( \\)*#\\+name:\\s-*\\(%s\\)\\b" label) nil t)
+	  (throw 'result (buffer-substring
+			  (progn
+			    (forward-line -1)
+			    (beginning-of-line)
+			    (point))
+			  (progn
+			    (forward-line 4)
+			    (point)))))
+	;; ;; CUSTOM_ID
+	(goto-char (point-min))
+	;; do we have a CUSTOM-ID?
+	(let ((heading (org-map-entries
+			(lambda ()
+			  (buffer-substring
+			   (progn
+			     (forward-line -1)
+			     (beginning-of-line)
+			     (point))
+			   (progn
+			     (forward-line 4)
+			     (point))))
+			(format  "CUSTOM_ID=\"%s\"" label))))
+	  ;; (message-box heading)
+	  (when heading
+	    (throw 'result (car heading))))
+	;; radio target
+	(goto-char (point-min))
+	(when (re-search-forward (format "<<%s>>" (regexp-quote label)) nil t)
+	  (throw 'result (match-string 0)))
+
+
+	(throw 'result "!!! NO CONTEXT FOUND !!!")))))
+
+(defun my-org-insert-ref-link-context ()
+  (interactive)
+  (let* ((labels (org-ref-get-labels))
+         (contexts (mapcar 'org-ref-get-label-context labels))
+         (cb (current-buffer)))
+
+    (helm :input (thing-at-point 'word)
+          :sources `(((name . "Available labels to ref")
+                      (multiline)
+                      (candidates . ,(cl-loop for label in labels
+                                              for context in contexts
+                                              ;; we do some kludgy adding spaces
+                                              ;; and bars to make it "easier" to
+                                              ;; see in helm.
+                                              collect (cons (concat
+                                                             label "\n"
+                                                             (mapconcat
+                                                              (lambda (x)
+                                                                (concat "   |" x))
+                                                              (split-string context "\n")
+                                                              "\n"
+                                                              ) "\n\n") label)))
+                      ;; default action to replace or insert ref link.
+                      (action . (lambda (label)
+                                  (switch-to-buffer ,cb)
+                                  (insert (format "[[%s]]" label)))))))))
+
 ;; config org-ref, but doesn't work properly for HTML export
 ;; (require-package 'org-ref)
 ;; (require 'org-ref)
