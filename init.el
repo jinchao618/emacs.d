@@ -64,7 +64,7 @@
 ;; (require 'init-grep)
 ;; (require 'init-uniquify)
 ;; (require 'init-ibuffer)
-(require 'init-flycheck)
+;; (require 'init-flycheck)
 
 ;(require 'init-recentf)
 ;(require 'init-smex)
@@ -83,6 +83,8 @@
 (require 'init-python)
 ;; (require 'init-company-ycmd)
 ;; (require 'init-company-irony)
+;; (require 'init-eglot)
+;; (require 'init-lsp)
 (require 'init-auctex)
 (require 'init-verilog)
 (require 'init-ediff)
