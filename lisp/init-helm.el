@@ -1,6 +1,7 @@
 (require-package 'helm)
 
 (require-package 'helm-ag)
+;; (require-package 'ag)
 
 (require-package 'helm-projectile)
 
@@ -8,6 +9,7 @@
 
 (require 'helm-config)
 (require 'helm-projectile)
+;; (require 'ag)
 (global-set-key (kbd "C-c h") 'helm-command-prefix)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (global-unset-key (kbd "C-x c"))

@@ -13,7 +13,8 @@
 
 (defun my-ycmd-common-hook()
   (company-mode t)
-  (ycmd-mode t))
+  (unless (tramp-tramp-file-p (buffer-file-name (current-buffer)))
+    (ycmd-mode)))
 
 (add-hook 'c++-mode-hook 'my-ycmd-common-hook)
 (add-hook 'c-mode-hook 'my-ycmd-common-hook)
