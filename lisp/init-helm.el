@@ -32,5 +32,6 @@
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-c a") 'helm-do-ag-this-file)
 (global-set-key (kbd "C-c g a") 'helm-do-ag)
+(global-set-key (kbd "C-c o") 'helm-ag-pop-stack)
 
 (provide 'init-helm)
