@@ -13,8 +13,9 @@
   eglot-ensure)
 (add-hook 'c-mode-hook 'eglot-ensure)
 (add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
 ;; (add-hook 'c-mode-hook 'my-eglot-common-hook)
 ;; (add-hook 'c++-mode-hook 'my-eglot-common-hook)
-;; (add-hook 'emacs-lisp-mode-hook 'my-eglot-common-hook)
+;; (add-hook 'emacs-lisp-mode-hook 'eglot-ensure)
 
 (provide 'init-eglot)
