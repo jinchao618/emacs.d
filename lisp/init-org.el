@@ -323,6 +323,11 @@
       (shell-command (concat "pngpaste " relativeFilename))
     (shell-command (concat "xclip -selection clipboard -t image/png -o > " relativeFilename)))
 
+  (insert "#+Caption:\n")
+  (insert (concat "#+Label: fig:" inputName "\n"))
+  (insert "#+attr_org: :width 750px\n")
+  (insert "#+attr_html: :width 50%\n")
+  (insert "#+attr_latex: :float nil\n")
   (insert (concat "[[file:" relativeFilename "]]"))
   (org-display-inline-images)
   )
