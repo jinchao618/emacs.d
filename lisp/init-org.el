@@ -58,7 +58,18 @@
 (defvar-local org-ref-labels '()
   "Known labels Stores a list of strings.")
 
+(defvar-local org-ref-headings '()
+  "Known headings Stores a list of strings.")
+
 (defvar org-ref-label-debug nil "If non-nil print debug messages.")
+
+(defvar org-ref-headings-regexps
+  '(
+    ;; heading
+    ;; "^\s*\\*+\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    ;; "^\s*\\(\\*+\\s-+[+a-zA-Z0-9\\._-]*\\)\\_>"
+    "^\s*\\(?1:\\*+\\s-+.*\\)\\_>")
+  "List of regexps that are headings in org-ref.")
 
 (defvar org-ref-label-regexps
   '(;; #+label:
@@ -110,10 +121,47 @@
 		     ;; if we are adding to a label.
 		     (setq org-ref-last-label-end end))))))))
 
+(defun org-ref-add-headings (start end)
+  (interactive "r")
+  (save-excursion
+    (save-match-data
+      (cl-loop for rx in org-ref-headings-regexps
+	       do
+	       (goto-char start)
+	       (while (re-search-forward rx end t)
+		 (let ((label (match-string-no-properties 1)))
+		   ;; I don't know why this gets found, but some labels are
+		   ;; empty strings. we don't store these.
+		   (unless (string= "" label)
+		     (with-silent-modifications
+		       (put-text-property (match-beginning 1)
+					  (match-end 1)
+					  'org-ref-heading t)
+		       (put-text-property (match-beginning 1)
+					  (match-end 1)
+					  'rear-nonsticky '(org-ref-heading)))
+
+		     (when org-ref-label-debug
+		       (message "oral: adding %s" label)
+		       (message "%S\n" org-ref-headings))
+		     (cl-pushnew label
+				 org-ref-headings :test 'string=)
+		     (when org-ref-label-debug
+		       (message "  oral: added %s" label)
+		       (message "  %S\n" org-ref-headings))
+		     ;; now store the last end so we can tell for the next run
+		     ;; if we are adding to a label.
+		     (setq org-ref-last-label-end end))))))))
+
 (defun org-ref-get-labels ()
   (save-excursion
     (org-ref-add-labels (point-min) (point-max)))
   (reverse org-ref-labels))
+
+(defun org-ref-get-headings ()
+  (save-excursion
+    (org-ref-add-headings (point-min) (point-max)))
+  (reverse org-ref-headings))
 
 (defun my-org-insert-ref-link ()
   (interactive)
@@ -123,6 +171,18 @@
 			:action (lambda (label)
 				  (with-helm-current-buffer
                                     (insert (format "[[%s]]" label))))))
+	  :buffer "*helm labels*")))
+
+(defun my-org-insert-headings-link ()
+  (interactive)
+  (let ((labels (org-ref-get-headings)))
+    (helm :sources `(,(helm-build-sync-source "Existing headings"
+			:candidates labels
+			:action (lambda (label)
+				  (with-helm-current-buffer
+                                    (setq heading (butlast (nthcdr 1 (split-string label " ")) -1))
+                                    ;; (print (string-join heading " "))
+                                    (insert (format "[[%s]]" (string-join heading " ")))))))
 	  :buffer "*helm labels*")))
 
 ;;** context around org-ref links
