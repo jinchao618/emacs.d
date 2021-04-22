@@ -16,6 +16,8 @@
 (setq python-shell-interpreter "python3")
 
 (require-package 'pip-requirements)
+;; (require-package 'elpy)
+;; (setq elpy-rpc-python-command "python3")
 
 (when (maybe-require-package 'anaconda-mode)
   (with-eval-after-load 'python
@@ -23,7 +25,10 @@
     ;; by default we enable it only when working locally.
     (add-hook 'python-mode-hook
               (lambda () (unless (file-remote-p default-directory)
-                           (anaconda-mode 1))))
+                           (anaconda-mode 1)))
+              ;; (elpy-enable)
+              ;; (remove-hook 'elpy-modules 'elpy-module-flymake)
+              )
     (add-hook 'anaconda-mode-hook
               (lambda ()
                 (anaconda-eldoc-mode (if anaconda-mode 1 0)))))
