@@ -17,7 +17,7 @@
 
 (defun my-eglot-cc-hook()
   (setq eglot-stay-out-of '(company imenu))
-  (message "%s" eglot-stay-out-of)
+  ;; (message "%s" eglot-stay-out-of)
   (eglot-ensure))
 
 (add-hook 'c-mode-hook 'my-eglot-cc-hook)
