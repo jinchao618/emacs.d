@@ -319,7 +319,7 @@
                :file file
                :position (match-beginning 0))
               headlines))))
-    (message "%s" (reverse headlines))
+    ;; (message "%s" (reverse headlines))
     (setq choice
       (completing-read "Headline: " (reverse headlines)))
     (find-file (plist-get (cdr (assoc choice headlines)) :file))
@@ -337,10 +337,10 @@
                          (cons (f-relative f) (concat lev "#" (nth 4 (org-heading-components))))
                          ;; (cons f (nth 4 (org-heading-components)))
                          ))))))))
-    (message "%s" headings)
-    (switch-to-buffer (get-buffer-create "*toc*"))
-    (erase-buffer)
-    (org-mode)
+    ;; (message "%s" headings)
+    ;; (switch-to-buffer (get-buffer-create "*toc*"))
+    ;; (erase-buffer)
+    ;; (org-mode)
     (cl-loop for (file . heading) in headings
       do
       (setq splitstr (split-string heading "#"))
