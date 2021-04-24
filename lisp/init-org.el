@@ -302,6 +302,57 @@
                       (action . (lambda (label)
                                   (switch-to-buffer ,cb)
                                   (insert (format "[[%s]]" label)))))))))
+(defun my-org-toc-navigate ()
+  (interactive)
+  (let ((files (f-entries "." (lambda (f) (f-ext? f "org")) t))
+    (headlines '())
+    choice)
+    (cl-loop for file in files do
+      (with-temp-buffer
+        (insert-file-contents file)
+        (goto-char (point-min))
+        (while (re-search-forward org-heading-regexp nil t)
+          (cl-pushnew (list
+               (format "%-80s (%s)"
+                   (match-string 0)
+                   (file-name-nondirectory file))
+               :file file
+               :position (match-beginning 0))
+              headlines))))
+    (message "%s" (reverse headlines))
+    (setq choice
+      (completing-read "Headline: " (reverse headlines)))
+    (find-file (plist-get (cdr (assoc choice headlines)) :file))
+    (goto-char (plist-get (cdr (assoc choice headlines)) :position))))
+
+(defun my-org-toc-generate ()
+  (interactive)
+  (let ((headings (delq nil (cl-loop for f in (f-entries "." (lambda (f) (f-ext? f "org")) t)
+                  append
+                  (with-current-buffer (find-file-noselect f)
+                    (org-map-entries
+                     (lambda ()
+                       (when (> 5 (car (org-heading-components)))
+                         (setq lev (make-string (nth 0 (org-heading-components)) ?*))
+                         (cons (f-relative f) (concat lev "#" (nth 4 (org-heading-components))))
+                         ;; (cons f (nth 4 (org-heading-components)))
+                         ))))))))
+    (message "%s" headings)
+    (switch-to-buffer (get-buffer-create "*toc*"))
+    (erase-buffer)
+    (org-mode)
+    (cl-loop for (file . heading) in headings
+      do
+      (setq splitstr (split-string heading "#"))
+      (setq str0 (nth 0 splitstr))
+      (setq str1 (nth 1 splitstr))
+      (insert (format "%s [[file:%s::*%s][%s]]\n" str0 file str1 str1))
+      )))
+;; (defun org-toc ()
+;;   "Generate a table of contents for org-files in this directory."
+;;   (interactive)
+;;   (let ((org-agenda-files (f-entries "." (lambda (f) (f-ext? f "org")) t)))
+;;     (helm-org-agenda-files-headings)))
 
 ;; config org-ref, but doesn't work properly for HTML export
 ;; (require-package 'org-ref)
