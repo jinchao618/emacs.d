@@ -327,15 +327,15 @@
 
 (defun my-org-toc-generate ()
   (interactive)
+  (setq inputlvl (read-string "TOC level:"))
   (let ((headings (delq nil (cl-loop for f in (f-entries "." (lambda (f) (f-ext? f "org")) t)
                   append
                   (with-current-buffer (find-file-noselect f)
                     (org-map-entries
                      (lambda ()
-                       (when (> 5 (car (org-heading-components)))
+                       (when (> (1+ (string-to-number inputlvl)) (car (org-heading-components)))
                          (setq lev (make-string (nth 0 (org-heading-components)) ?*))
                          (cons (f-relative f) (concat lev "#" (nth 4 (org-heading-components))))
-                         ;; (cons f (nth 4 (org-heading-components)))
                          ))))))))
     ;; (message "%s" headings)
     ;; (switch-to-buffer (get-buffer-create "*toc*"))
