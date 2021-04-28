@@ -391,16 +391,24 @@
 (require 'org-download)
 
 ;; load and enable languages
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(
-   (python . t)
-   ;; (ipython . t)
-   ;; (sh . t)
-   (shell . t)
-   ;; Include other languages here...
-   ))
-
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '(
+;;    (python . t)
+;;    ;; (ipython . t)
+;;    ;; (sh . t)
+;;    (shell . t)
+;;    ;; Include other languages here...
+;;    ))
+(eval-after-load "org"
+  '(org-babel-do-load-languages
+    'org-babel-load-languages
+    '(
+      ;; (sh . t)
+      (python . t)
+      (emacs-lisp . t)
+      ;; (ditaa . t)
+      )))
 ;; Drag-and-drop to `dired`
 (add-hook 'dired-mode-hook 'org-download-enable)
 
@@ -409,6 +417,7 @@
 ;; (setq-default org-download-heading-lvl nil)
 (setq-default org-list-allow-alphabetical t)
 (setq org-startup-indented t)
+(setq org-babel-python-command "python3")
 
 ;; (defun org-insert-clipboard-image (&optional file)
 (defun my-org-insert-clipboard-image ()
