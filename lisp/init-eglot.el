@@ -13,6 +13,7 @@
   ;; (cl-set-difference 'company eglot-stay-out-of)
   ;; (pop eglot-stay-out-of)
   (setq eglot-stay-out-of '(imenu))
+  (flymake-mode -1)
   (eglot-ensure))
 
 (defun my-eglot-cc-hook()
