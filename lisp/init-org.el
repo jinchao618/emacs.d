@@ -412,6 +412,10 @@
 ;; Drag-and-drop to `dired`
 (add-hook 'dired-mode-hook 'org-download-enable)
 
+(setq org-ascii-underline (quote ((ascii) (latin1) (utf-8))))
+(setq org-ascii-headline-spacing (quote (0 , 0)))
+;; (setq org-ascii-inner-margin 0)
+
 (setq-default org-download-display-inline-images nil)
 (setq-default org-image-actual-width nil)
 ;; (setq-default org-download-heading-lvl nil)
