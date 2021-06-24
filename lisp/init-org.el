@@ -52,7 +52,16 @@
       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
+;; (setq org-latex-pdf-process
+;;        (let
+;;            ((cmd (concat "pdflatex -shell-escape -interaction nonstopmode"
+;;                  " --synctex=1"
+;;                  " -output-directory %o %f")))
+;;          (list cmd
+;;            "cd %o; if test -r %b.idx; then makeindex %b.idx; fi"
+;;            "cd %o; bibtex %b"
+;;            cmd
+;;            cmd)))
 ;; my org insert ref link and relative functions
 ;; reused org-ref functions
 (defvar-local org-ref-labels '()
@@ -454,6 +463,15 @@
   (insert "#+attr_latex: :float nil\n")
   (insert (concat "[[file:" relativeFilename "]]"))
   (org-display-inline-images)
+  )
+
+(defun my-org-insert-image-setting ()
+  (interactive)
+  (insert "#+Caption:\n")
+  (insert (concat "#+Label: fig:" inputName "\n"))
+  (insert "#+attr_org: :width 750px\n")
+  (insert "#+attr_html: :width 50%\n")
+  (insert "#+attr_latex: :float nil\n")
   )
 
 ;; (defun my-org-download-image (link)
