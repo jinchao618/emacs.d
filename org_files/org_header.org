@@ -44,10 +44,10 @@
 #+LATEX_HEADER: \titleformat{\paragraph}{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 #+LATEX_HEADER: \titlespacing*{\paragraph}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
-#+HTML_HEAD_EXTRA: <style type="text/css">
-#+HTML_HEAD_EXTRA: table {border-left: 1px solid black; border-right: 1px solid black;}
-#+HTML_HEAD_EXTRA: </style>
-#+HTML_HEAD_EXTRA: <style> .figure p {text-align: left;}</style>
+# #+HTML_HEAD_EXTRA: <style type="text/css">
+# #+HTML_HEAD_EXTRA: table {border-left: 1px solid black; border-right: 1px solid black;}
+# #+HTML_HEAD_EXTRA: </style>
+# #+HTML_HEAD_EXTRA: <style> .figure p {text-align: left;}</style>
 
 # #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 

@@ -468,7 +468,7 @@
 (defun my-org-insert-image-setting ()
   (interactive)
   (insert "#+Caption:\n")
-  (insert (concat "#+Label: fig:" inputName "\n"))
+  (insert (concat "#+Label: " "\n"))
   (insert "#+attr_org: :width 750px\n")
   (insert "#+attr_html: :width 50%\n")
   (insert "#+attr_latex: :float nil\n")

@@ -2983,28 +2983,30 @@ table {
     margin: 1em auto;
     border-top: 2px solid;
     border-bottom: 2px solid;
+    border-left: 2px solid;
+    border-right: 2px solid;
     border-collapse: collapse;
 }
 
-table tr:nth-child(2n-1) td{
-    background-color:#f3f6f6;
-}
+/* table tr:nth-child(2n-1) td{ */
+/*     background-color:#f3f6f6; */
+/* } */
 
-table tr:nth-child(2n) td{
-    background-color:white;
-}
+/* table tr:nth-child(2n) td{ */
+/*     background-color:white; */
+/* } */
 
 thead {
     border-bottom: 2px solid;
 }
 
-table td + td, table th + th {
-    border-left: 1px solid gray;
-}
+/* table td + td, table th + th { */
+/*     border-left: 1px solid gray; */
+/* } */
 
-table tr {
-    border-top: 1px solid lightgray;
-}
+/* table tr { */
+/*     border-top: 1px solid lightgray; */
+/* } */
 
 td,th {
     padding: 0.3em 0.6em;
