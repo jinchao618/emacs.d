@@ -3170,9 +3170,9 @@ kbd {
 
 /* Because tag span is set to float.  This is more like a hacking.  Maybe we
    need a cleaner solution. */
-#table-of-contents li {
-    clear: both;
-}
+/* #table-of-contents li { */
+/*     clear: both; */
+/* } */
 #table-of-contents li{
     list-style:none;
     margin-left: 0px;
