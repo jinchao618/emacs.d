@@ -108,7 +108,7 @@
 ;; (require 'init-javascript)
 ;; (require 'init-php)
 (require 'init-org)
-;; (require 'init-nxml)
+(require 'init-nxml)
 (require 'init-html)
 ;; (require 'init-css)
 ;; (require 'init-haml)
