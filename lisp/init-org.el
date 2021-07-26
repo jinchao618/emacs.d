@@ -334,6 +334,35 @@
     (find-file (plist-get (cdr (assoc choice headlines)) :file))
     (goto-char (plist-get (cdr (assoc choice headlines)) :position))))
 
+(defun my-org-toc-insert ()
+  (interactive)
+  (let ((files (f-entries "." (lambda (f) (f-ext? f "org")) t))
+    (headlines '())
+    choice)
+    (cl-loop for file in files do
+      (with-temp-buffer
+        (insert-file-contents file)
+        (goto-char (point-min))
+        (while (re-search-forward org-heading-regexp nil t)
+          (cl-pushnew (list
+               (format "%-80s (%s)"
+                   (match-string 0)
+                   (file-name-nondirectory file))
+               :file (f-relative file)
+               :heading (match-string 0))
+              headlines))))
+    ;; (message "%s" (reverse headlines))
+    (setq choice
+      (completing-read "Headline: " (reverse headlines)))
+    ;; (message "%s" choice)
+    (setq file (plist-get (cdr (assoc choice headlines)) :file))
+    (setq heading (plist-get (cdr (assoc choice headlines)) :heading))
+    ;; (message "1: %s" heading)
+    (setq str0 (string-join (cdr (split-string heading)) " "))
+    ;; (message "2: %s" str0)
+    (insert (format "[[file:%s::*%s][%s]]\n" file str0 str0))
+    ))
+
 (defun my-org-toc-generate ()
   (interactive)
   (setq inputlvl (read-string "TOC level:"))
