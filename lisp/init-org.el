@@ -497,10 +497,17 @@
 (defun my-org-insert-image-setting ()
   (interactive)
   (insert "#+Caption:\n")
-  (insert (concat "#+Label: " "\n"))
+  (insert "#+Label:\n")
   (insert "#+attr_org: :width 750px\n")
   (insert "#+attr_html: :width 50%\n")
   (insert "#+attr_latex: :float nil\n")
+  )
+
+(defun my-org-insert-table-setting ()
+  (interactive)
+  (insert "#+Caption:\n")
+  (insert "#+Label:\n")
+  (insert "#+attr_latex: :align |c|c|l|p{6cm}| :float nil")
   )
 
 ;; (defun my-org-download-image (link)
