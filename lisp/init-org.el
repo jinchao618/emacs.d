@@ -360,7 +360,7 @@
     ;; (message "1: %s" heading)
     (setq str0 (string-join (cdr (split-string heading)) " "))
     ;; (message "2: %s" str0)
-    (insert (format "[[file:%s::*%s][%s]]\n" file str0 str0))
+    (insert (format "[[file:%s::*%s][%s]]" file str0 str0))
     ))
 
 (defun my-org-toc-generate ()
