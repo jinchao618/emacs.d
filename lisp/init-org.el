@@ -496,11 +496,14 @@
 
 (defun my-org-insert-image-setting ()
   (interactive)
+  (insert "#+Label:\n")
+  (insert "#+CALL: get-filename-by-backend(filename=\"\")\n")
   (insert "#+Caption:\n")
   (insert "#+Label:\n")
   (insert "#+attr_org: :width 750px\n")
   (insert "#+attr_html: :width 50%\n")
   (insert "#+attr_latex: :float nil\n")
+  (insert "#+RESULTS:\n")
   )
 
 (defun my-org-insert-table-setting ()
