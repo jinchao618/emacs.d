@@ -496,14 +496,27 @@
 
 (defun my-org-insert-image-setting ()
   (interactive)
-  (insert "#+Label:\n")
-  (insert "#+CALL: get-filename-by-backend(filename=\"\")\n")
+  (setq foldername org-download-image-dir)
+  (if (not (file-exists-p foldername))
+      (mkdir foldername))
+
+  (setq inputName (read-string "File name:"))
+  (if (equal inputName "")
+      (setq inputName (format-time-string "%Y_%m_%d__%H_%M_%S")))
+
+  (setq imgName (concat "img_" inputName))
+
+  (setq relativeFilename (concat foldername imgName))
+  (insert (concat "#+Label: fig:" inputName "\n"))
+  (insert (concat "#+CALL: get-filename-by-backend(filename=\"" relativeFilename "\")\n"))
   (insert "#+Caption:\n")
-  (insert "#+Label:\n")
+  (insert (concat "#+Label: fig:" inputName "\n"))
   (insert "#+attr_org: :width 750px\n")
-  (insert "#+attr_html: :width 50%\n")
+  ;; (insert "#+attr_html: :width 50%\n")
   (insert "#+attr_latex: :float nil\n")
-  (insert "#+RESULTS:\n")
+  (insert (concat "#+RESULTS: fig:" inputName "\n"))
+  (insert (concat "[[file:" relativeFilename ".svg]]"))
+  (org-display-inline-images)
   )
 
 (defun my-org-insert-table-setting ()
