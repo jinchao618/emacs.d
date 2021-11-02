@@ -460,6 +460,7 @@
 (setq-default org-list-allow-alphabetical t)
 (setq org-startup-indented t)
 (setq org-babel-python-command "python3")
+(setq-default org-confirm-babel-evaluate nil)
 
 ;; (defun org-insert-clipboard-image (&optional file)
 (defun my-org-insert-clipboard-image ()
