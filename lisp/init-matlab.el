@@ -5,5 +5,6 @@
  'auto-mode-alist
  '("\\.m$" . matlab-mode))
 (setq matlab-indent-function t)
+(setq matlab-indent-level 2)
 (setq matlab-shell-command "matlab")
 (provide 'init-matlab)
