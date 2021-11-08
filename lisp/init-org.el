@@ -70,39 +70,62 @@
 (defvar-local org-ref-headings '()
   "Known headings Stores a list of strings.")
 
-(defvar org-ref-label-debug nil "If non-nil print debug messages.")
+(defvar org-ref-debug nil "If non-nil print debug messages.")
 
-(defvar org-ref-headings-regexps
-  '(
-    ;; heading
-    ;; "^\s*\\*+\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-    ;; "^\s*\\(\\*+\\s-+[+a-zA-Z0-9\\._-]*\\)\\_>"
-    "^\s*\\(?1:\\*+\\s-+.*\\)\\_>")
-  "List of regexps that are headings in org-ref.")
+;; (defvar org-ref-headings-regexps
+;;   '(
+;;     ;; heading
+;;     ;; "^\s*\\*+\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+;;     ;; "^\s*\\(\\*+\\s-+[+a-zA-Z0-9\\._-]*\\)\\_>"
+;;     "^\s*\\(?1:\\*+\\s-+.*\\)\\_>")
+;;   "List of regexps that are headings in org-ref.")
 
-(defvar org-ref-label-regexps
-  '(;; #+label:
-    ;; "^#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-    "^\s*#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-    ;; CUSTOM_ID in a heading
-    ":CUSTOM_ID:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-    ;; #+name
-    "^\\s-*#\\+name:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-    ;; radio targets
-    "<<\\(?1:[+a-zA-Z0-9:\\._-]*\\)>>"
-    ;; #+tblname:
-    "^\\s-*#\\+tblname:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-    ;; label links
-    "label:\\(?1:[+a-zA-Z0-9:\\._-]*\\)"
-    ;; labels in latex
-    "\\\\label{\\(?1:[+a-zA-Z0-9:\\._-]*\\)}")
-  "List of regexps that are labels in org-ref.")
+;; (defvar org-ref-label-regexps
+;;   '(;; #+label:
+;;     ;; "^#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+;;     "^\s*#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+;;     ;; CUSTOM_ID in a heading
+;;     ":CUSTOM_ID:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+;;     ;; #+name
+;;     "^\\s-*#\\+name:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+;;     ;; radio targets
+;;     "<<\\(?1:[+a-zA-Z0-9:\\._-]*\\)>>"
+;;     ;; #+tblname:
+;;     "^\\s-*#\\+tblname:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+;;     ;; label links
+;;     "label:\\(?1:[+a-zA-Z0-9:\\._-]*\\)"
+;;     ;; labels in latex
+;;     "\\\\label{\\(?1:[+a-zA-Z0-9:\\._-]*\\)}")
+;;   "List of regexps that are labels in org-ref.")
 
-(defun org-ref-add-labels (start end)
+(defun org-ref-add-string (ref-string start end)
   (interactive "r")
+  (if (equal ref-string "labels")
+      (setq ref-regexps
+            '(;; #+label:
+              ;; "^#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+              "^\s*#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+              ;; CUSTOM_ID in a heading
+              ":CUSTOM_ID:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+              ;; #+name
+              "^\\s-*#\\+name:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+              ;; radio targets
+              "<<\\(?1:[+a-zA-Z0-9:\\._-]*\\)>>"
+              ;; #+tblname:
+              "^\\s-*#\\+tblname:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+              ;; label links
+              "label:\\(?1:[+a-zA-Z0-9:\\._-]*\\)"
+              ;; labels in latex
+              "\\\\label{\\(?1:[+a-zA-Z0-9:\\._-]*\\)}"))
+    (setq ref-regexps
+          '(
+            ;; heading
+            ;; "^\s*\\*+\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+            ;; "^\s*\\(\\*+\\s-+[+a-zA-Z0-9\\._-]*\\)\\_>"
+            "^\s*\\(?1:\\*+\\s-+.*\\)\\_>")))
   (save-excursion
     (save-match-data
-      (cl-loop for rx in org-ref-label-regexps
+      (cl-loop for rx in ref-regexps
 	       do
 	       (goto-char start)
 	       (while (re-search-forward rx end t)
@@ -111,70 +134,54 @@
 		   ;; empty strings. we don't store these.
 		   (unless (string= "" label)
 		     (with-silent-modifications
-		       (put-text-property (match-beginning 1)
-					  (match-end 1)
-					  'org-ref-label t)
-		       (put-text-property (match-beginning 1)
-					  (match-end 1)
-					  'rear-nonsticky '(org-ref-label)))
+                       (if (equal ref-string "labels")
+                           (progn
+                             (put-text-property (match-beginning 1)
+                                              (match-end 1)
+                                              'org-ref-label t)
+                             (put-text-property (match-beginning 1)
+                                                (match-end 1)
+                                                'rear-nonsticky '(org-ref-label)))
+                         (progn
+                           (put-text-property (match-beginning 1)
+                                             (match-end 1)
+                                             'org-ref-heading t)
+                           (put-text-property (match-beginning 1)
+                                              (match-end 1)
+                                              'rear-nonsticky '(org-ref-heading)))
+                         )
+                       )
 
-		     (when org-ref-label-debug
+		     (when org-ref-debug
 		       (message "oral: adding %s" label)
-		       (message "%S\n" org-ref-labels))
-		     (cl-pushnew label
-				 org-ref-labels :test 'string=)
-		     (when org-ref-label-debug
+                       (if (equal ref-string "labels")
+                           (message "%S\n" org-ref-labels)
+                         (message "%S\n" org-ref-headings)))
+                     (if (equal ref-string "labels")
+                         (cl-pushnew label
+                                     org-ref-labels :test 'string=)
+                       (cl-pushnew label
+                                 org-ref-headings :test 'string=))
+		     (when org-ref-debug
 		       (message "  oral: added %s" label)
-		       (message "  %S\n" org-ref-labels))
+                       (if (equal ref-string "labels")
+                           (message "%S\n" org-ref-labels)
+                         (message "%S\n" org-ref-headings)))
 		     ;; now store the last end so we can tell for the next run
 		     ;; if we are adding to a label.
 		     (setq org-ref-last-label-end end))))))))
 
-(defun org-ref-add-headings (start end)
-  (interactive "r")
+(defun org-ref-get-contents (org-ref-string)
   (save-excursion
-    (save-match-data
-      (cl-loop for rx in org-ref-headings-regexps
-	       do
-	       (goto-char start)
-	       (while (re-search-forward rx end t)
-		 (let ((label (match-string-no-properties 1)))
-		   ;; I don't know why this gets found, but some labels are
-		   ;; empty strings. we don't store these.
-		   (unless (string= "" label)
-		     (with-silent-modifications
-		       (put-text-property (match-beginning 1)
-					  (match-end 1)
-					  'org-ref-heading t)
-		       (put-text-property (match-beginning 1)
-					  (match-end 1)
-					  'rear-nonsticky '(org-ref-heading)))
-
-		     (when org-ref-label-debug
-		       (message "oral: adding %s" label)
-		       (message "%S\n" org-ref-headings))
-		     (cl-pushnew label
-				 org-ref-headings :test 'string=)
-		     (when org-ref-label-debug
-		       (message "  oral: added %s" label)
-		       (message "  %S\n" org-ref-headings))
-		     ;; now store the last end so we can tell for the next run
-		     ;; if we are adding to a label.
-		     (setq org-ref-last-label-end end))))))))
-
-(defun org-ref-get-labels ()
-  (save-excursion
-    (org-ref-add-labels (point-min) (point-max)))
-  (reverse org-ref-labels))
-
-(defun org-ref-get-headings ()
-  (save-excursion
-    (org-ref-add-headings (point-min) (point-max)))
-  (reverse org-ref-headings))
+    (org-ref-add-string org-ref-string (point-min) (point-max)))
+  (if (equal org-ref-string "labels")
+      (reverse org-ref-labels)
+    (reverse org-ref-headings)))
 
 (defun my-org-insert-ref-link ()
   (interactive)
-  (let ((labels (org-ref-get-labels)))
+  (let ((labels (org-ref-get-contents "labels")))
+    (message "%S\n" labels)
     (helm :sources `(,(helm-build-sync-source "Existing labels"
 			:candidates labels
 			:action (lambda (label)
@@ -184,7 +191,7 @@
 
 (defun my-org-insert-headings-link ()
   (interactive)
-  (let ((labels (org-ref-get-headings)))
+  (let ((labels (org-ref-get-contents "headings")))
     (helm :sources `(,(helm-build-sync-source "Existing headings"
 			:candidates labels
 			:action (lambda (label)
