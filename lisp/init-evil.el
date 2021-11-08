@@ -17,6 +17,7 @@
 ;; (define-key evil-normal-state-map (kbd "C-p") 'helm-gtags-find-files)
 (define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
 (define-key evil-normal-state-map (kbd "C-.") 'xref-find-references)
+(define-key evil-normal-state-map (kbd "C-M-.") 'xref-find-definitions-other-window)
 (define-key evil-normal-state-map (kbd "C-'") 'comment-or-uncomment-region)
 (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
 
