@@ -15,7 +15,10 @@
 ;; (define-key evil-normal-state-map (kbd "C-t") 'helm-gtags-pop-stack)
 ;; (define-key evil-normal-state-map (kbd "M-.") 'helm-gtags-find-tag-from-here)
 ;; (define-key evil-normal-state-map (kbd "C-p") 'helm-gtags-find-files)
+(define-key evil-normal-state-map (kbd "M-.") 'xref-find-definitions)
+(define-key evil-normal-state-map (kbd "C-.") 'xref-find-references)
 (define-key evil-normal-state-map (kbd "C-'") 'comment-or-uncomment-region)
+(evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
 
 ;; (eval-after-load 'evail-maps
 ;;   '(define-key evil-normal-state-map (kbd "M-.") nil))

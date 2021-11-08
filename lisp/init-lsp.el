@@ -31,6 +31,7 @@
 (require-package 'lsp-ui)
 (add-hook 'lsp 'lsp-ui-mode)
 (setq lsp-ui-doc-position 'bottom)
+;; (setq lsp-diagnostics-provider :none)
 
 (setq lsp-ui-doc-enable t
       lsp-ui-peek-enable t
