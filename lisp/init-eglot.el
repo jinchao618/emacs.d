@@ -19,7 +19,7 @@
 (defun my-eglot-cc-hook()
   (setq eglot-stay-out-of '(company imenu))
   ;; (message "%s" eglot-stay-out-of)
-  ;; (flymake-mode -1)
+  (flymake-mode -1)
   (eglot-ensure))
 
 (add-hook 'c-mode-hook 'my-eglot-cc-hook)
