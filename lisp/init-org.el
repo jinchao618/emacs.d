@@ -515,6 +515,9 @@
   (setq imgName (concat "img_" inputName))
 
   (setq relativeFilename (concat foldername imgName))
+  (if (not (file-exists-p (concat relativeFilename ".svg")))
+      (make-empty-file (concat relativeFilename ".svg")))
+
   (insert (concat "#+Label: fig:" inputName "\n"))
   (insert (concat "#+CALL: get-filename-by-backend(filename=\"" relativeFilename "\")\n"))
   (insert "#+Caption:\n")
