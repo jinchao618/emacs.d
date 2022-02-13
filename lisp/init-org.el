@@ -71,6 +71,7 @@
   "Known headings Stores a list of strings.")
 
 (defvar org-ref-debug nil "If non-nil print debug messages.")
+(defvar org-ref-label-debug nil "If non-nil print debug messages.")
 
 ;; (defvar org-ref-headings-regexps
 ;;   '(
@@ -80,52 +81,29 @@
 ;;     "^\s*\\(?1:\\*+\\s-+.*\\)\\_>")
 ;;   "List of regexps that are headings in org-ref.")
 
-;; (defvar org-ref-label-regexps
-;;   '(;; #+label:
-;;     ;; "^#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-;;     "^\s*#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-;;     ;; CUSTOM_ID in a heading
-;;     ":CUSTOM_ID:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-;;     ;; #+name
-;;     "^\\s-*#\\+name:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-;;     ;; radio targets
-;;     "<<\\(?1:[+a-zA-Z0-9:\\._-]*\\)>>"
-;;     ;; #+tblname:
-;;     "^\\s-*#\\+tblname:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-;;     ;; label links
-;;     "label:\\(?1:[+a-zA-Z0-9:\\._-]*\\)"
-;;     ;; labels in latex
-;;     "\\\\label{\\(?1:[+a-zA-Z0-9:\\._-]*\\)}")
-;;   "List of regexps that are labels in org-ref.")
+(defvar org-ref-label-regexps
+  '(;; #+label:
+    ;; "^#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    "^\s*#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    ;; CUSTOM_ID in a heading
+    ":CUSTOM_ID:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    ;; #+name
+    "^\\s-*#\\+name:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    ;; radio targets
+    "<<\\(?1:[+a-zA-Z0-9:\\._-]*\\)>>"
+    ;; #+tblname:
+    "^\\s-*#\\+tblname:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+    ;; label links
+    "label:\\(?1:[+a-zA-Z0-9:\\._-]*\\)"
+    ;; labels in latex
+    "\\\\label{\\(?1:[+a-zA-Z0-9:\\._-]*\\)}")
+  "List of regexps that are labels in org-ref.")
 
-(defun org-ref-add-string (ref-string start end)
+(defun org-ref-add-labels (start end)
   (interactive "r")
-  (if (equal ref-string "labels")
-      (setq ref-regexps
-            '(;; #+label:
-              ;; "^#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-              "^\s*#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-              ;; CUSTOM_ID in a heading
-              ":CUSTOM_ID:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-              ;; #+name
-              "^\\s-*#\\+name:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-              ;; radio targets
-              "<<\\(?1:[+a-zA-Z0-9:\\._-]*\\)>>"
-              ;; #+tblname:
-              "^\\s-*#\\+tblname:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-              ;; label links
-              "label:\\(?1:[+a-zA-Z0-9:\\._-]*\\)"
-              ;; labels in latex
-              "\\\\label{\\(?1:[+a-zA-Z0-9:\\._-]*\\)}"))
-    (setq ref-regexps
-          '(
-            ;; heading
-            ;; "^\s*\\*+\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
-            ;; "^\s*\\(\\*+\\s-+[+a-zA-Z0-9\\._-]*\\)\\_>"
-            "^\s*\\(?1:\\*+\\s-+.*\\)\\_>")))
   (save-excursion
     (save-match-data
-      (cl-loop for rx in ref-regexps
+      (cl-loop for rx in org-ref-label-regexps
 	       do
 	       (goto-char start)
 	       (while (re-search-forward rx end t)
@@ -134,72 +112,29 @@
 		   ;; empty strings. we don't store these.
 		   (unless (string= "" label)
 		     (with-silent-modifications
-                       (if (equal ref-string "labels")
-                           (progn
-                             (put-text-property (match-beginning 1)
-                                              (match-end 1)
-                                              'org-ref-label t)
-                             (put-text-property (match-beginning 1)
-                                                (match-end 1)
-                                                'rear-nonsticky '(org-ref-label)))
-                         (progn
-                           (put-text-property (match-beginning 1)
-                                             (match-end 1)
-                                             'org-ref-heading t)
-                           (put-text-property (match-beginning 1)
-                                              (match-end 1)
-                                              'rear-nonsticky '(org-ref-heading)))
-                         )
-                       )
+		       (put-text-property (match-beginning 1)
+					  (match-end 1)
+					  'org-ref-label t)
+		       (put-text-property (match-beginning 1)
+					  (match-end 1)
+					  'rear-nonsticky '(org-ref-label)))
 
-		     (when org-ref-debug
+		     (when org-ref-label-debug
 		       (message "oral: adding %s" label)
-                       (if (equal ref-string "labels")
-                           (message "%S\n" org-ref-labels)
-                         (message "%S\n" org-ref-headings)))
-                     (if (equal ref-string "labels")
-                         (cl-pushnew label
-                                     org-ref-labels :test 'string=)
-                       (cl-pushnew label
-                                 org-ref-headings :test 'string=))
-		     (when org-ref-debug
+		       (message "%S\n" org-ref-labels))
+		     (cl-pushnew label
+				 org-ref-labels :test 'string=)
+		     (when org-ref-label-debug
 		       (message "  oral: added %s" label)
-                       (if (equal ref-string "labels")
-                           (message "%S\n" org-ref-labels)
-                         (message "%S\n" org-ref-headings)))
+		       (message "  %S\n" org-ref-labels))
 		     ;; now store the last end so we can tell for the next run
 		     ;; if we are adding to a label.
 		     (setq org-ref-last-label-end end))))))))
 
-(defun org-ref-get-contents (org-ref-string)
+(defun org-ref-get-labels ()
   (save-excursion
-    (org-ref-add-string org-ref-string (point-min) (point-max)))
-  (if (equal org-ref-string "labels")
-      (reverse org-ref-labels)
-    (reverse org-ref-headings)))
-
-(defun my-org-insert-ref-link ()
-  (interactive)
-  (let ((labels (org-ref-get-contents "labels")))
-    (message "%S\n" labels)
-    (helm :sources `(,(helm-build-sync-source "Existing labels"
-			:candidates labels
-			:action (lambda (label)
-				  (with-helm-current-buffer
-                                    (insert (format "[[%s]]" label))))))
-	  :buffer "*helm labels*")))
-
-(defun my-org-insert-headings-link ()
-  (interactive)
-  (let ((labels (org-ref-get-contents "headings")))
-    (helm :sources `(,(helm-build-sync-source "Existing headings"
-			:candidates labels
-			:action (lambda (label)
-				  (with-helm-current-buffer
-                                    (setq heading (butlast (nthcdr 1 (split-string label " ")) -1))
-                                    ;; (print (string-join heading " "))
-                                    (insert (format "[[%s]]" (string-join heading " ")))))))
-	  :buffer "*helm labels*")))
+    (org-ref-add-labels (point-min) (point-max)))
+  (reverse org-ref-labels))
 
 ;;** context around org-ref links
 (defun org-ref-get-label-context (label)
@@ -293,6 +228,7 @@
 	(throw 'result "!!! NO CONTEXT FOUND !!!")))))
 
 (defun my-org-insert-ref-link-context ()
+  "Insert reference with contents for current file."
   (interactive)
   (let* ((labels (org-ref-get-labels))
          (contexts (mapcar 'org-ref-get-label-context labels))
@@ -318,30 +254,142 @@
                       (action . (lambda (label)
                                   (switch-to-buffer ,cb)
                                   (insert (format "[[%s]]" label)))))))))
-(defun my-org-toc-navigate ()
+
+(defun org-ref-add-string (ref-string start end)
+  (interactive "r")
+  (if (equal ref-string "labels")
+      (setq ref-regexps
+            '(;; #+label:
+              ;; "^#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+              "^\s*#\\+label:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+              ;; CUSTOM_ID in a heading
+              ":CUSTOM_ID:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+              ;; #+name
+              "^\\s-*#\\+name:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+              ;; radio targets
+              "<<\\(?1:[+a-zA-Z0-9:\\._-]*\\)>>"
+              ;; #+tblname:
+              "^\\s-*#\\+tblname:\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+              ;; label links
+              "label:\\(?1:[+a-zA-Z0-9:\\._-]*\\)"
+              ;; labels in latex
+              "\\\\label{\\(?1:[+a-zA-Z0-9:\\._-]*\\)}"))
+    (setq ref-regexps
+          '(
+            ;; heading
+            ;; "^\s*\\*+\\s-+\\(?1:[+a-zA-Z0-9:\\._-]*\\)\\_>"
+            ;; "^\s*\\(\\*+\\s-+[+a-zA-Z0-9\\._-]*\\)\\_>"
+            "^\s*\\(?1:\\*+\\s-+.*\\)\\_>")))
+  (save-excursion
+    (save-match-data
+      (cl-loop for rx in ref-regexps
+	       do
+	       (goto-char start)
+	       (while (re-search-forward rx end t)
+		 (let ((label (match-string-no-properties 1)))
+		   ;; I don't know why this gets found, but some labels are
+		   ;; empty strings. we don't store these.
+		   (unless (string= "" label)
+		     (with-silent-modifications
+                       (if (equal ref-string "labels")
+                           (progn
+                             (put-text-property (match-beginning 1)
+                                              (match-end 1)
+                                              'org-ref-label t)
+                             (put-text-property (match-beginning 1)
+                                                (match-end 1)
+                                                'rear-nonsticky '(org-ref-label)))
+                         (progn
+                           (put-text-property (match-beginning 1)
+                                             (match-end 1)
+                                             'org-ref-heading t)
+                           (put-text-property (match-beginning 1)
+                                              (match-end 1)
+                                              'rear-nonsticky '(org-ref-heading)))
+                         )
+                       )
+
+		     (when org-ref-debug
+		       (message "oral: adding %s" label)
+                       (if (equal ref-string "labels")
+                           (message "%S\n" org-ref-labels)
+                         (message "%S\n" org-ref-headings)))
+                     (if (equal ref-string "labels")
+                         (cl-pushnew label
+                                     org-ref-labels :test 'string=)
+                       (cl-pushnew label
+                                 org-ref-headings :test 'string=))
+		     (when org-ref-debug
+		       (message "  oral: added %s" label)
+                       (if (equal ref-string "labels")
+                           (message "%S\n" org-ref-labels)
+                         (message "%S\n" org-ref-headings)))
+		     ;; now store the last end so we can tell for the next run
+		     ;; if we are adding to a label.
+		     (setq org-ref-last-label-end end))))))))
+
+(defun org-ref-get-contents (org-ref-string)
+  (save-excursion
+    (org-ref-add-string org-ref-string (point-min) (point-max)))
+  (if (equal org-ref-string "labels")
+      (reverse org-ref-labels)
+    (reverse org-ref-headings)))
+
+(defun my-org-insert-ref-link ()
+  (interactive)
+  (let ((labels (org-ref-get-contents "labels")))
+    (message "%S\n" labels)
+    (helm :sources `(,(helm-build-sync-source "Existing labels"
+			:candidates labels
+			:action (lambda (label)
+				  (with-helm-current-buffer
+                                    (insert (format "[[%s]]" label))))))
+	  :buffer "*helm labels*")))
+
+(defun my-org-insert-ref-link-multi_files ()
+  "Generate references for all org files and generate link for selected reference."
   (interactive)
   (let ((files (f-entries "." (lambda (f) (f-ext? f "org")) t))
-    (headlines '())
+    (labels '())
     choice)
     (cl-loop for file in files do
       (with-temp-buffer
         (insert-file-contents file)
         (goto-char (point-min))
-        (while (re-search-forward org-heading-regexp nil t)
-          (cl-pushnew (list
-               (format "%-80s (%s)"
-                   (match-string 0)
-                   (file-name-nondirectory file))
-               :file file
-               :position (match-beginning 0))
-              headlines))))
-    ;; (message "%s" (reverse headlines))
+        (cl-loop for rx in org-ref-label-regexps do
+                 (while (re-search-forward rx nil t)
+                   (cl-pushnew (list
+                                (format "%-80s (%s)"
+                                        (match-string 1)
+                                        (file-name-nondirectory file))
+                                :file (f-relative file)
+                                :label (match-string 1))
+                               labels))
+                 )
+        ))
     (setq choice
-      (completing-read "Headline: " (reverse headlines)))
-    (find-file (plist-get (cdr (assoc choice headlines)) :file))
-    (goto-char (plist-get (cdr (assoc choice headlines)) :position))))
+      (completing-read "Existing labels: " (reverse labels)))
+    (setq file (plist-get (cdr (assoc choice labels)) :file))
+    (setq label (plist-get (cdr (assoc choice labels)) :label))
+    ;; (setq str0 (string-join (cdr (split-string heading)) " "))
+    (insert (format "[[file:%s::*%s]]" file label))
+    ))
 
-(defun my-org-toc-insert ()
+(defun my-org-insert-headings-link ()
+  "Insert heading link of current file."
+  (interactive)
+  (let ((labels (org-ref-get-contents "headings")))
+    (helm :sources `(,(helm-build-sync-source "Existing headings"
+			:candidates labels
+			:action (lambda (label)
+				  (with-helm-current-buffer
+                                    (setq heading (butlast (nthcdr 1 (split-string label " ")) -1))
+                                    ;; (print (string-join heading " "))
+                                    (insert (format "[[%s]]" (string-join heading " ")))))))
+	  :buffer "*helm labels*")))
+
+(defun my-org-insert-headings-link-multi_files ()
+  "Generate headings for all org files and generate link for selected heading."
   (interactive)
   (let ((files (f-entries "." (lambda (f) (f-ext? f "org")) t))
     (headlines '())
@@ -370,7 +418,33 @@
     (insert (format "[[file:%s::*%s][%s]]" file str0 str0))
     ))
 
-(defun my-org-toc-generate ()
+(defun my-org-navigate-headings-multi-files ()
+  "Navigate headings for all org files under the same folder."
+  (interactive)
+  (let ((files (f-entries "." (lambda (f) (f-ext? f "org")) t))
+    (headlines '())
+    choice)
+    (cl-loop for file in files do
+      (with-temp-buffer
+        (insert-file-contents file)
+        (goto-char (point-min))
+        (while (re-search-forward org-heading-regexp nil t)
+          (cl-pushnew (list
+               (format "%-80s (%s)"
+                   (match-string 0)
+                   (file-name-nondirectory file))
+               :file file
+               :position (match-beginning 0))
+              headlines))))
+    ;; (message "%s" (reverse headlines))
+    (setq choice
+      (completing-read "Headline: " (reverse headlines)))
+    (find-file (plist-get (cdr (assoc choice headlines)) :file))
+    (goto-char (plist-get (cdr (assoc choice headlines)) :position))))
+
+
+(defun my-org-generate-headings-multi-files ()
+  "Generate headings with input TOC level for all org files."
   (interactive)
   (setq inputlvl (read-string "TOC level:"))
   (let ((headings (delq nil (cl-loop for f in (f-entries "." (lambda (f) (f-ext? f "org")) t)
@@ -471,6 +545,7 @@
 
 ;; (defun org-insert-clipboard-image (&optional file)
 (defun my-org-insert-clipboard-image ()
+  "Insert image from clipboad."
   ;; (interactive "F")
   (interactive)
   ;; (setq foldername (concat "./" (file-name-sans-extension (file-name-nondirectory buffer-file-name)) "_IMG/"))
@@ -503,6 +578,7 @@
   )
 
 (defun my-org-insert-image-setting ()
+  "Insert image setting."
   (interactive)
   (setq foldername org-download-image-dir)
   (if (not (file-exists-p foldername))
@@ -531,6 +607,7 @@
   )
 
 (defun my-org-insert-table-setting ()
+  "Insert table setting."
   (interactive)
   (insert "#+Caption:\n")
   (insert "#+Label:\n")
