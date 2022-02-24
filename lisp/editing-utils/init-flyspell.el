@@ -1,15 +1,18 @@
+;;; init-flyspell.el --- Spell check settings
+;;; Commentary:
+;;; Code:
 ;;----------------------------------------------------------------------------
 ;; Add spell-checking in comments for all programming language modes
 ;;----------------------------------------------------------------------------
-(if (fboundp 'prog-mode)
-    (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-  (dolist (hook '(lisp-mode-hook
-                  emacs-lisp-mode-hook
-                  scheme-mode-hook
-                  python-mode-hook
-                  shell-mode-hook
-                  haskell-mode-hook))
-    (add-hook hook 'flyspell-prog-mode)))
+;; (if (fboundp 'prog-mode)
+;;     (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+;;   (dolist (hook '(lisp-mode-hook
+;;                   emacs-lisp-mode-hook
+;;                   scheme-mode-hook
+;;                   python-mode-hook
+;;                   shell-mode-hook
+;;                   haskell-mode-hook))
+;;     (add-hook hook 'flyspell-prog-mode)))
 
 ;; on OSX the mouse 2 is tricky
 (when *is-a-mac*
@@ -29,3 +32,4 @@
        (global-set-key (kbd "M-<f9>") 'flyspell-check-next-highlighted-word))))
 
 (provide 'init-flyspell)
+;;; init-flyspell.el ends here

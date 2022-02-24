@@ -150,7 +150,8 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 (when (executable-find "aspell")
   (setq-default ispell-program-name "aspell")
   (setq ispell-really-aspell t)
-  (require 'init-flyspell))
+  (require 'init-flyspell)
+  )
 
 ;; maximize window
 (if (window-system)
