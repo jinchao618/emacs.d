@@ -599,7 +599,7 @@
   (insert "#+Caption:\n")
   (insert (concat "#+Label: fig:" inputName "\n"))
   (insert "#+attr_org: :width 750px\n")
-  (insert "#+attr_html: :width 100%\n")
+  (insert "#+attr_html: :width 750px\n")
   (insert "#+attr_latex: :float nil\n")
   (insert (concat "#+RESULTS: fig:" inputName "\n"))
   (insert (concat "[[file:" relativeFilename ".svg]]"))
