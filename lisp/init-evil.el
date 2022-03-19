@@ -20,6 +20,8 @@
 (define-key evil-normal-state-map (kbd "C-M-.") 'xref-find-definitions-other-window)
 (define-key evil-normal-state-map (kbd "C-'") 'comment-or-uncomment-region)
 (evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
+(evil-set-initial-state 'helm-ag-mode 'emacs)
+(evil-set-initial-state 'grep-mode 'emacs)
 
 ;; (eval-after-load 'evail-maps
 ;;   '(define-key evil-normal-state-map (kbd "M-.") nil))
