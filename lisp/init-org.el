@@ -542,6 +542,14 @@
 (setq org-startup-indented t)
 (setq org-babel-python-command "python3")
 (setq-default org-confirm-babel-evaluate nil)
+(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face))
+(set-face-attribute 'org-block nil :inherit '(shadow))
+(set-face-attribute 'org-code nil :inherit '(shadow))
+(set-face-attribute 'org-table nil :inherit nil)
+(set-face-attribute 'org-date nil :inherit nil)
+;; (setq org-src-preserve-indentation t)
+;; (setq org-html-indent nil)
+
 
 ;; (defun org-insert-clipboard-image (&optional file)
 (defun my-org-insert-clipboard-image ()
