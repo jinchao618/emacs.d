@@ -622,6 +622,25 @@
   (insert "#+attr_latex: :align |c|c|l|p{6cm}| :float nil")
   )
 
+(add-to-list 'org-src-lang-modes '("latex-macros" . latex))
+
+(defvar org-babel-default-header-args:latex-macros
+  '((:results . "raw")
+    (:exports . "results")))
+
+(defun prefix-all-lines (pre body)
+  (with-temp-buffer
+    (insert body)
+    (string-insert-rectangle (point-min) (point-max) pre)
+    (buffer-string)))
+
+(defun org-babel-execute:latex-macros (body _params)
+  (concat
+   (prefix-all-lines "#+LATEX_HEADER: " body)
+   "\n#+HTML_HEAD_EXTRA: <div style=\"display: none\"> \\(\n"
+   (prefix-all-lines "#+HTML_HEAD_EXTRA: " body)
+   "\n#+HTML_HEAD_EXTRA: \\)</div>\n"))
+
 ;; (defun my-org-download-image (link)
 ;;   ;; (interactive)
 ;;   (interactive "sUrl: ")
