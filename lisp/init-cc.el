@@ -29,9 +29,9 @@
   (hs-minor-mode)
 
   ;; semantic-stikyfunc-mode
-  (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
-  (semantic-mode 1)
-  (require 'stickyfunc-enhance)
+  ;; (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+  ;; (semantic-mode 1)
+  ;; (require 'stickyfunc-enhance)
 
   ;; TODO: seems not work
   (require 'srefactor)
