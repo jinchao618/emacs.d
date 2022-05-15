@@ -1,11 +1,28 @@
 [user]
-	name = Chao
-	email = chao.jin75618@gmail.com
+  name = Chao
+  email = chao.jin75618@gmail.com
 [alias]
   co = checkout
   ci = commit
   st = status
   br = branch
+  lg = log --color --graph --date=format:'%Y-%m-%d %H:%M:%S' --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --abbrev-commit
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  difftree = diff-tree --name-status -r
+  lstree = ls-tree --name-only -r
+  ref = for-each-ref --format='%(color:cyan)%(authordate:format:%m/%d/%Y %I:%M %p)    %(align:25,left)%(color:yellow)%(authorname)%(end) %(color:reset)%(refname:strip=3)' --sort=authordate refs/remotes
   type = cat-file -t
   dump = cat-file -p
+
+[merge]
+  tool = meld
+[diff]
+  tool = meld
+[difftool]
+  prompt = false
+[difftool "meld"]
+  cmd = meld "$LOCAL" "$REMOTE"
+[mergetool "meld"]
+  cmd = meld "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
+[core]
+  excludesfile = ~/.gitignore
