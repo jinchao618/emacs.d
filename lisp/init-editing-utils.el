@@ -47,6 +47,8 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 
 ;; some personal key bindings
 (global-set-key (kbd "C-c r") 'replace-string)
+(global-set-key (kbd "C-0") 'scroll-other-window)
+(global-set-key (kbd "C-9") 'scroll-other-window-down)
 
 ;; newline behavior
 (global-set-key (kbd "RET") 'newline-and-indent)
