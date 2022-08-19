@@ -1,7 +1,9 @@
-;;; package --- Summary:
+;;; init-toml.el --- Support TOML files -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
-(require-package 'toml-mode)
+
+;; (when (maybe-require-package 'toml-mode)
+;;   (add-hook 'toml-mode-hook 'goto-address-prog-mode))
 
 (require 'julia-mode)
 
