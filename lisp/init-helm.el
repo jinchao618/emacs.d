@@ -23,6 +23,7 @@
 (helm-projectile-on)
 (setq helm-ag-always-set-extra-option t)
 (setq helm-candidate-number-limit nil)
+(setq helm-ag-base-command "rg --no-heading")
 
 (define-key helm-map "<escape>" 'helm-keyboard-quit)
 
