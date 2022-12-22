@@ -7,7 +7,7 @@
 
 ;; (require-package 'helm-gtags)
 
-(require 'helm-config)
+;; (require 'helm-config)
 (require 'helm-projectile)
 ;; (require 'ag)
 (global-set-key (kbd "C-c h") 'helm-command-prefix)
