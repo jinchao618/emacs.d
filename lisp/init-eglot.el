@@ -1,3 +1,10 @@
+;;; init-eglot.el --- LSP support via eglot          -*- lexical-binding: t; -*-
+
+;;; Commentary:
+
+;;; Code:
+
+;; For Emacs >= 27
 (require-package 'company)
 (global-company-mode 1)
 
@@ -33,3 +40,4 @@
 ;; (add-hook 'emacs-lisp-mode-hook 'eglot-ensure)
 
 (provide 'init-eglot)
+;;; init-eglot.el ends here

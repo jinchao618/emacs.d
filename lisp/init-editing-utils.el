@@ -10,7 +10,8 @@
 (setq-default
  blink-cursor-delay 0.5
  blink-cursor-interval 0.4
- buffers-menu-max-size 20
+ bookmark-default-file (locate-user-emacs-file ".bookmarks.el")
+ buffers-menu-max-size 30
  case-fold-search t
  column-number-mode t
  compilation-scroll-output t
@@ -36,10 +37,13 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 (set-scroll-bar-mode nil)
 (tool-bar-mode 0)
 
-;; auto-revert
-(global-auto-revert-mode)
+;; (add-hook 'after-init-hook 'delete-selection-mode)
+
+(add-hook 'after-init-hook 'global-auto-revert-mode)
 (setq global-auto-revert-non-file-buffers t
-      auto-revert-verbose t)
+      auto-revert-verbose nil)
+(with-eval-after-load 'autorevert
+  (diminish 'auto-revert-mode))
 
 ;; enable auto-pairing
 ;; (require 'init-autopair)
@@ -60,8 +64,7 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 
 (global-set-key (kbd "S-<return>") 'sanityinc/newline-at-end-of-line)
 
-;; change yes-or-no to y-or-n
-;; (fset 'yes-or-no-p 'y-or-n-p)
+
 
 ;; display time
 (display-time-mode t)
@@ -178,3 +181,4 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
                 "%b")))
 
 (provide 'init-editing-utils)
+;;; init-editing-utils.el ends here
