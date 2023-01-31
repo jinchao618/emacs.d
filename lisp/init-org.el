@@ -526,6 +526,7 @@
       ;; (sh . t)
       (python . t)
       (emacs-lisp . t)
+      (plantuml . t)
       ;; (ditaa . t)
       )))
 ;; Drag-and-drop to `dired`
@@ -549,7 +550,9 @@
 (set-face-attribute 'org-date nil :inherit nil)
 ;; (setq org-src-preserve-indentation t)
 ;; (setq org-html-indent nil)
-
+(add-to-list 'org-src-lang-modes '("latex-macros" . latex))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+(setq org-plantuml-exec-mode 'plantuml)
 
 ;; (defun org-insert-clipboard-image (&optional file)
 (defun my-org-insert-clipboard-image ()
@@ -621,8 +624,6 @@
   (insert "#+Label:\n")
   (insert "#+attr_latex: :align |c|c|l|p{6cm}| :float nil")
   )
-
-(add-to-list 'org-src-lang-modes '("latex-macros" . latex))
 
 (defvar org-babel-default-header-args:latex-macros
   '((:results . "raw")

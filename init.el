@@ -91,6 +91,7 @@
 (require 'init-ediff)
 (require 'init-julia)
 (require 'init-matlab)
+(require 'init-plantuml)
 
 (require 'init-editing-utils)
 ;; (require 'init-whitespace)
