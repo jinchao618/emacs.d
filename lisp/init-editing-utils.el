@@ -108,6 +108,12 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 (require-package 'stickyfunc-enhance)
 (require-package 'srefactor)
 
+;; xclip mode
+(require-package 'xclip)
+(require 'xclip)
+(xclip-mode t)
+(setq select-enable-clipboard nil)
+
 ;; enable subword-mode
 ;; (global-subword-mode t)
 
