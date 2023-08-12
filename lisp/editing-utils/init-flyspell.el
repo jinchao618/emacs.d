@@ -16,12 +16,13 @@
 
 ;; on OSX the mouse 2 is tricky
 (when *is-a-mac*
+  (global-set-key (kbd "C-S-<f9>") 'flyspell-mode)
   (eval-after-load "flyspell"
     '(progn
        (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
        (define-key flyspell-mouse-map [mouse-3] #'undefined)
        (global-set-key (kbd "<f9>") 'ispell-word)
-       (global-set-key (kbd "C-S-<f9>") 'flyspell-mode)
+       ;; (global-set-key (kbd "C-S-<f9>") 'flyspell-mode)
        (global-set-key (kbd "C-M-<f9>") 'flyspell-buffer)
        (global-set-key (kbd "C-<f9>") 'flyspell-check-previous-highlighted-word)
        (defun flyspell-check-next-highlighted-word ()
