@@ -4,12 +4,13 @@
 
 ;;; Code:
 
-;; For Emacs >= 27
+;; For Emacs >= 29
 (require-package 'company)
 (global-company-mode 1)
 
-(require-package 'eglot)
+;; (require-package 'eglot)
 (require 'eglot)
+(setq-default eglot-ignored-server-capabilities '(:inlayHintProvider))
 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
 ;; (add-to-list 'eglot-stay-out-of 'imenu)
 ;; (add-to-list 'eglot-stay-out-of 'company)
