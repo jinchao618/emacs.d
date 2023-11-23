@@ -1,3 +1,6 @@
+;;; package --- Summary:
+;;; Commentary:
+;;; Code:
 (require-package 'helm)
 
 (require-package 'helm-ag)

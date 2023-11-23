@@ -55,14 +55,14 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 (global-set-key (kbd "C-9") 'scroll-other-window-down)
 
 ;; newline behavior
-(global-set-key (kbd "RET") 'newline-and-indent)
+;; (global-set-key (kbd "RET") 'newline-and-indent)
 (defun sanityinc/newline-at-end-of-line ()
   "Move to end of line, enter a newline, and reindent."
   (interactive)
   (move-end-of-line 1)
   (newline-and-indent))
 
-(global-set-key (kbd "S-<return>") 'sanityinc/newline-at-end-of-line)
+;; (global-set-key (kbd "S-<return>") 'sanityinc/newline-at-end-of-line)
 
 
 
