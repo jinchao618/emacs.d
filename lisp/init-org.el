@@ -527,6 +527,7 @@
       (python . t)
       (emacs-lisp . t)
       (plantuml . t)
+      (julia . t)
       ;; (ditaa . t)
       )))
 ;; Drag-and-drop to `dired`
@@ -541,6 +542,7 @@
 ;; (setq-default org-download-heading-lvl nil)
 (setq-default org-list-allow-alphabetical t)
 (setq org-startup-indented t)
+(setq org-startup-numerated t)
 (setq org-babel-python-command "python3")
 (setq-default org-confirm-babel-evaluate nil)
 (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face))
