@@ -14,6 +14,7 @@
 ;; Sample executable configuration
 ;; (setq plantuml-executable-path "/path/to/your/copy/of/plantuml.bin")
 (setq plantuml-default-exec-mode 'executable)
+(setq plantuml-indent-level 4)
 
 (provide 'init-plantuml)
 
