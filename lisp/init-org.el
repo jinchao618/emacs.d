@@ -100,6 +100,7 @@
   "List of regexps that are labels in org-ref.")
 
 (defun org-ref-add-labels (start end)
+  "Get lebels around START and END."
   (interactive "r")
   (save-excursion
     (save-match-data
@@ -132,6 +133,7 @@
 		     (setq org-ref-last-label-end end))))))))
 
 (defun org-ref-get-labels ()
+  "Get ref labels."
   (save-excursion
     (org-ref-add-labels (point-min) (point-max)))
   (reverse org-ref-labels))
@@ -256,6 +258,7 @@
                                   (insert (format "[[%s]]" label)))))))))
 
 (defun org-ref-add-string (ref-string start end)
+  "Get ref string at REF-STRING, START and END."
   (interactive "r")
   (if (equal ref-string "labels")
       (setq ref-regexps
@@ -329,6 +332,7 @@
 		     (setq org-ref-last-label-end end))))))))
 
 (defun org-ref-get-contents (org-ref-string)
+  "Get reference content of ORG-REF-STRING."
   (save-excursion
     (org-ref-add-string org-ref-string (point-min) (point-max)))
   (if (equal org-ref-string "labels")
@@ -336,6 +340,8 @@
     (reverse org-ref-headings)))
 
 (defun my-org-insert-ref-link ()
+  "Generate references for current org file.
+And generate link for selected reference."
   (interactive)
   (let ((labels (org-ref-get-contents "labels")))
     (message "%S\n" labels)
@@ -679,12 +685,14 @@
     (:exports . "results")))
 
 (defun prefix-all-lines (pre body)
+  "Latex macros with PRE and BODY ."
   (with-temp-buffer
     (insert body)
     (string-insert-rectangle (point-min) (point-max) pre)
     (buffer-string)))
 
 (defun org-babel-execute:latex-macros (body _params)
+  "Latex macros with BODY ."
   (concat
    (prefix-all-lines "#+LATEX_HEADER: " body)
    "\n#+HTML_HEAD_EXTRA: <div style=\"display: none\"> \\(\n"
@@ -699,4 +707,4 @@
 ;;   )
 
 (provide 'init-org)
-;; ;;; init-org.el ends here
+;;; init-org.el ends here
