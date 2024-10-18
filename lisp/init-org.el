@@ -680,6 +680,19 @@ And generate link for selected reference."
   (insert "#+attr_latex: :align |c|c|l|p{6cm}| :float nil")
   )
 
+(defun my-org-insert-file-setting ()
+  "Insert org file setting."
+  (interactive)
+
+  (setq myfile  (read-file-name "Select prj_org_header.org file: "))
+
+  (insert " # -*- org-download-image-dir: ; org-download-heading-lvl: nil; -*-\n")
+  (insert "#+TITLE:\n\n")
+  (insert (concat "#+INCLUDE: " (f-relative myfile) "\n"))
+  (insert (concat "#+CALL: prj-header-run(filename=\"" (f-relative myfile) "\")\n"))
+  )
+
+;; Exporting Latex macro to HTML/MathJax
 (defvar org-babel-default-header-args:latex-macros
   '((:results . "raw")
     (:exports . "results")))
