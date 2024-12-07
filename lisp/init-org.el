@@ -686,7 +686,7 @@ And generate link for selected reference."
 
   (setq myfile  (read-file-name "Select prj_org_header.org file: "))
 
-  (insert " # -*- org-download-image-dir: ; org-download-heading-lvl: nil; -*-\n")
+  (insert " # -*- org-download-image-dir: \"\"; org-download-heading-lvl: nil; -*-\n")
   (insert "#+TITLE:\n\n")
   (insert (concat "#+INCLUDE: " (f-relative myfile) "\n"))
   (insert (concat "#+CALL: prj-header-run(filename=\"" (f-relative myfile) "\")\n"))
