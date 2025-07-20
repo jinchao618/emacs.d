@@ -3,7 +3,8 @@
 ;;; Code:
 (require-package 'helm)
 
-(require-package 'helm-ag)
+;; (require-package 'helm-ag)
+(require-package 'helm-rg)
 ;; (require-package 'ag)
 
 (require-package 'helm-projectile)
@@ -36,8 +37,10 @@
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-c a") 'helm-do-ag-this-file)
-(global-set-key (kbd "C-c g a") 'helm-do-ag)
+;; (global-set-key (kbd "C-c a") 'helm-do-ag-this-file)
+;; (global-set-key (kbd "C-c g a") 'helm-do-ag)
+(global-set-key (kbd "C-c a") 'helm-occur)
+(global-set-key (kbd "C-c g a") 'helm-rg)
 (global-set-key (kbd "C-c o") 'helm-ag-pop-stack)
 
 (provide 'init-helm)
