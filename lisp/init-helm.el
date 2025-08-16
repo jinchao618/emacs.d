@@ -25,10 +25,10 @@
 ;; (setq projectile-enable-caching t)
 (setq projectile-svn-command "find . -type f -print0")
 (helm-projectile-on)
-(setq helm-ag-always-set-extra-option t)
+;; (setq helm-ag-always-set-extra-option t)
 (setq helm-candidate-number-limit nil)
-(setq helm-ag-base-command "rg --no-heading")
-(setq helm-ag-command-option "--smart-case")
+;; (setq helm-ag-base-command "rg --no-heading")
+;; (setq helm-ag-command-option "--smart-case")
 
 (define-key helm-map "<escape>" 'helm-keyboard-quit)
 
@@ -41,6 +41,17 @@
 ;; (global-set-key (kbd "C-c g a") 'helm-do-ag)
 (global-set-key (kbd "C-c a") 'helm-occur)
 (global-set-key (kbd "C-c g a") 'helm-rg)
-(global-set-key (kbd "C-c o") 'helm-ag-pop-stack)
+(global-set-key (kbd "C-c f s") 'projectile--find-file)
 
+(require 'helm-fd)
+(defun helm-fd (arg)
+  (interactive "P")
+  (let ((directory
+         (if arg
+             (file-name-as-directory
+              (read-directory-name "DefaultDirectory: "))
+           default-directory)))
+    (helm-fd-1 directory)))
+
+(global-set-key (kbd "C-c f d") 'helm-fd)
 (provide 'init-helm)
