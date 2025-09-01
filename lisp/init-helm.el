@@ -57,18 +57,21 @@
   "Initialize fd process with AND search support for space-separated terms.
 
    Example usage:
-   - Input: 'init_helm'
-   - Creates regex: '(init).*?(helm)'
-   - Finds files containing both 'init' AND 'helm' in their paths
+   - Input: 'key1 key2'
+   - Creates regex: '(key1).*?(key2)'
+   - Finds files containing both 'key1' AND 'key2' in their paths
 
    Uses --color=never to prevent green text conflicts with helm highlighting."
   (let* (process-connection-type
          (terms (split-string helm-pattern))
          ;; Convert space-separated terms to regex pattern for AND search
-         ;; "foo bar" becomes "(foo).*?(bar)" to match files containing both
+         ;; "foo bar" becomes "(foo).*?(bar)|(bar).*?(foo)" to match files containing both
          (regex-pattern (if (> (length terms) 1)
-                           (concat "(" (mapconcat 'regexp-quote terms ").*?(") ")")
-                           (car terms)))
+                            (let ((quoted-terms (mapcar 'regexp-quote terms)))
+                              (concat "(" (mapconcat 'identity quoted-terms ").*?(") ")"
+                                      "|"
+                                      "(" (mapconcat 'identity (reverse quoted-terms) ").*?(") ")"))
+                          (car terms)))
          ;; Use fd switches without color to prevent display conflicts
          (fd-switches-no-color '("--no-ignore" "--hidden" "--type" "f" "--type" "d" "--color=never"))
          (cmd (append fd-switches-no-color (list regex-pattern)))
@@ -101,8 +104,8 @@
    - C-u C-c f d: Choose directory first, then search
 
    Search examples:
-   - 'init' -> finds files containing 'init'
-   - 'init helm' -> finds files containing both 'init' AND 'helm'
+   - 'key' -> finds files containing 'key'
+   - 'key1 key2' -> finds files containing both 'key1' AND 'key2'. key1 and key2 can be any order.
    - 'config emacs lisp' -> finds files containing all three terms
 
    This mimics projectile-find-file's space-separated search behavior. "
