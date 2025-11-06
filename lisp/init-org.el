@@ -564,6 +564,10 @@ And generate link for selected reference."
 (setq org-html-mathjax-template
    "<script>\12  MathJax.Hub.Config = {\12    tex: {\12      ams: {\12        multlineWidth: '%MULTLINEWIDTH'\12      },\12      tags: '%TAGS',\12      tagSide: '%TAGSIDE',\12      tagIndent: '%TAGINDENT'\12    },\12    chtml: {\12      scale: %SCALE,\12      displayAlign: '%ALIGN',\12      displayIndent: '%INDENT'\12    },\12    svg: {\12      scale: %SCALE,\12      displayAlign: '%ALIGN',\12      displayIndent: '%INDENT'\12    },\12    output: {\12      font: '%FONT',\12      displayOverflow: '%OVERFLOW'\12    }\12  };\12</script>\12\12<script\12  id=\"MathJax-script\"\12  async\12  src=\"%PATH\">\12</script>")
 
+;; below is to generate svg file for latex preview
+;; (setq org-preview-latex-default-process 'dvisvgm)
+;; (setq org-element-use-cache nil)
+
 ;; (defun org-insert-clipboard-image (&optional file)
 (defun my-org-insert-clipboard-image ()
   "Insert image from clipboad."
@@ -615,9 +619,19 @@ And generate link for selected reference."
   (org-display-inline-images)
   )
 
-(defun my-org-insert-image-setting ()
+(defun my-org-insert-svg-image-setting ()
   "Insert image setting."
   (interactive)
+  (my-org-insert-image-setting "svg")
+  )
+
+(defun my-org-insert-png-image-setting ()
+  "Insert image setting."
+  (interactive)
+  (my-org-insert-image-setting "png")
+  )
+
+(defun my-org-insert-image-setting (extType)
   (setq foldername org-download-image-dir)
   (if (not (file-exists-p foldername))
       (mkdir foldername))
@@ -629,8 +643,8 @@ And generate link for selected reference."
   (setq imgName (concat "img_" inputName))
 
   (setq relativeFilename (concat foldername imgName))
-  (if (not (file-exists-p (concat relativeFilename ".svg")))
-      (make-empty-file (concat relativeFilename ".svg")))
+  (if (not (file-exists-p (concat relativeFilename "." extType)))
+      (make-empty-file (concat relativeFilename "." extType)))
 
   (setq ipt (progn (back-to-indentation) (point)))
   (setq bol (progn (move-beginning-of-line 1) (point)))
@@ -643,7 +657,7 @@ And generate link for selected reference."
       (delete-region bol ipt)))
   (insert (concat "#+name: fn:" inputName "\n"))
   (insert indent)
-  (insert (concat "#+CALL: get-filename-by-backend(filename=\"" relativeFilename "\")\n"))
+  (insert (concat "#+CALL: get-" extType "-filename-by-backend(filename=\"" relativeFilename "\")\n"))
   (insert indent)
   (insert "#+Caption:\n")
   (insert indent)
@@ -657,7 +671,7 @@ And generate link for selected reference."
   (insert indent)
   (insert (concat "#+RESULTS: fn:" inputName "\n"))
   (insert indent)
-  (insert (concat "[[file:" relativeFilename ".svg]]"))
+  (insert (concat "[[file:" relativeFilename "." extType "]]"))
   (org-display-inline-images)
   )
 
