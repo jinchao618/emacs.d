@@ -564,6 +564,28 @@ And generate link for selected reference."
 (setq org-html-mathjax-template
    "<script>\12  MathJax.Hub.Config = {\12    tex: {\12      ams: {\12        multlineWidth: '%MULTLINEWIDTH'\12      },\12      tags: '%TAGS',\12      tagSide: '%TAGSIDE',\12      tagIndent: '%TAGINDENT'\12    },\12    chtml: {\12      scale: %SCALE,\12      displayAlign: '%ALIGN',\12      displayIndent: '%INDENT'\12    },\12    svg: {\12      scale: %SCALE,\12      displayAlign: '%ALIGN',\12      displayIndent: '%INDENT'\12    },\12    output: {\12      font: '%FONT',\12      displayOverflow: '%OVERFLOW'\12    }\12  };\12</script>\12\12<script\12  id=\"MathJax-script\"\12  async\12  src=\"%PATH\">\12</script>")
 
+(with-eval-after-load 'org-tempo
+  ;; Define the template with n> and an explicit indentation call for the end
+  (tempo-define-template "org-equation"
+                         '("\\begin{equation*}" n> p n
+                           (progn (indent-according-to-mode) "\\end{equation*}"))
+                         "<M"
+                         "Insert LaTeX equation environment")
+
+  ;; Add it to the tags list
+  (add-to-list 'org-tempo-tags '("<M" . tempo-template-org-equation)))
+
+(with-eval-after-load 'org-tempo
+  ;; Define the template with n> and an explicit indentation call for the end
+  (tempo-define-template "org-align"
+                         '("\\begin{align*}" n> p n
+                           (progn (indent-according-to-mode) "\\end{align*}"))
+                         "<A"
+                         "Insert LaTeX align environment")
+
+  ;; Add it to the tags list
+  (add-to-list 'org-tempo-tags '("<A" . tempo-template-org-align)))
+
 ;; below is to generate svg file for latex preview
 ;; (setq org-preview-latex-default-process 'dvisvgm)
 ;; (setq org-element-use-cache nil)
