@@ -22,7 +22,7 @@
   (setq my-ediff-saved-window-config (current-window-configuration)))
 
 (defun my-ediff-restore-window-config ()
-  "Restore the window configuraton after ediff quits."
+  "Restore the window configuration after ediff quits."
   (when my-ediff-saved-window-config
     (set-window-configuration my-ediff-saved-window-config)
     (setq my-ediff-saved-window-config nil)))

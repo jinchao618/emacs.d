@@ -42,7 +42,7 @@
   ;; Custom function to ediff file at point against another branch
   (defun my-magit-ediff-file-at-point (branch)
     "Ediff the file at point between BRANCH and working tree."
-    (interactive (list (magit-read-branch "Compare wiht branch")))
+    (interactive (list (magit-read-branch "Compare with branch")))
     (let ((file (magit-file-at-point)))
       (if file
           (let ((branch-buffer (magit-find-file-noselect branch file))
