@@ -5,7 +5,51 @@
 (when (maybe-require-package 'markdown-mode)
   (add-auto-mode 'markdown-mode "\\.md\\.html\\'")
   (with-eval-after-load 'whitespace-cleanup-mode
-    (add-to-list 'whitespace-cleanup-mode-ignore-modes 'markdown-mode)))
+    (add-to-list 'whitespace-cleanup-mode-ignore-modes 'markdown-mode))
+  (with-eval-after-load 'markdown-mode
+    (setq markdown-command "pandoc")
+    (define-key markdown-mode-map (kbd "C-c C-e h") #'my-markdown-export-html)
+    (define-key markdown-mode-map (kbd "C-c C-e p") #'my-markdown-export-pdf)
+    (define-key markdown-mode-map (kbd "C-c C-e H") #'my-markdown-export-html-open)
+    (define-key markdown-mode-map (kbd "C-c C-e P") #'my-markdown-export-pdf-open)))
+
+(defun my-markdown-export-html ()
+  "Export current Markdown buffer to HTML using pandoc."
+  (interactive)
+  (let* ((input (buffer-file-name))
+         (output (concat (file-name-sans-extension input) ".html")))
+    (if (executable-find "pandoc")
+        (progn
+          (shell-command (format "pandoc -s -mathjax %s -o %s" (shell-quote-argument input) (shell-quote-argument output)))
+          (message "Exported to %s" output))
+      (error "pandoc not found; install with: brew install pandoc"))))
+
+(defun my-markdown-export-html-open ()
+  "Export current Markdown to HTML and open in browser."
+  (interactive)
+  (my-markdown-export-html)
+  (let ((output (concat (file-name-sans-extension (buffer-file-name)) ".html")))
+    (when (file-exists-p output)
+      (browse-url (concat "file://" output)))))
+
+(defun my-markdown-export-pdf ()
+  "Export current Markdown buffer to PDF using pandoc and pdflatex."
+  (interactive)
+  (let* ((input (buffer-file-name))
+         (output (concat (file-name-sans-extension input) ".pdf")))
+    (if (executable-find "pandoc")
+        (progn
+          (shell-command (format "pandoc %s -o %s --pdf-engine=pdflatex" (shell-quote-argument input) (shell-quote-argument output)))
+          (message "Exported to %s" output))
+      (error "pandoc not found; install with: brew install pandoc"))))
+
+(defun my-markdown-export-pdf-open ()
+  "Export current Markdown to PDF and open it."
+  (interactive)
+  (my-markdown-export-pdf)
+  (let ((output (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
+    (when (file-exists-p output)
+      (shell-command (format "open %s" (shell-quote-argument output))))))
 
 (require-package 'impatient-mode)
 (defun markdown-html (buffer)
