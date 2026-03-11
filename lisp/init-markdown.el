@@ -20,12 +20,12 @@
          (output (concat (file-name-sans-extension input) ".html")))
     (if (executable-find "pandoc")
         (progn
-          (shell-command (format "pandoc -s -mathjax %s -o %s" (shell-quote-argument input) (shell-quote-argument output)))
+          (shell-command (format "pandoc -s --mathjax %s -o %s" (shell-quote-argument input) (shell-quote-argument output)))
           (message "Exported to %s" output))
       (error "pandoc not found; install with: brew install pandoc"))))
 
 (defun my-markdown-export-html-open ()
-  "Export current Markdown to HTML and open in browser."
+  "Export current Markdown buffer to HTML and open in browser."
   (interactive)
   (my-markdown-export-html)
   (let ((output (concat (file-name-sans-extension (buffer-file-name)) ".html")))
@@ -44,7 +44,7 @@
       (error "pandoc not found; install with: brew install pandoc"))))
 
 (defun my-markdown-export-pdf-open ()
-  "Export current Markdown to PDF and open it."
+  "Export current Markdown buffer to PDF and open it."
   (interactive)
   (my-markdown-export-pdf)
   (let ((output (concat (file-name-sans-extension (buffer-file-name)) ".pdf")))
