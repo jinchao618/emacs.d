@@ -35,7 +35,9 @@
 
 ;; reset undo syste to undo-tree
 ;; could be deprecated for Emacs beyond v.28
-(evil-set-undo-system 'undo-tree)
+;; Use built-in undo-redo (Emacs 28+) - undo-tree has known issue with
+;; modified-flag tracking in terminal mode on Emacs 29+
+(evil-set-undo-system 'undo-redo)
 
 (provide 'init-evil)
 ;;; init-evil.el ends here
