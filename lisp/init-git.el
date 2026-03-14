@@ -14,6 +14,11 @@
 
 (require-package 'git-link)
 
+;; Dependencies required by magit >= 20260313
+;; TODO: remove after upgrading to Emacs 30 -- magit deps not auto-installed by packeage.el on Emacs 29
+(require-package 'llama)
+(require-package 'cond-let)
+
 (when (maybe-require-package 'magit)
   (setq-default magit-diff-refine-hunk t)
 
@@ -58,7 +63,7 @@
 (with-eval-after-load 'magit
   (fullframe magit-status magit-mode-quit-window))
 
-(when (maybe-require-package 'git-commit)
+(with-eval-after-load 'git-commit
   (add-hook 'git-commit-mode-hook 'goto-address-mode))
 
 
