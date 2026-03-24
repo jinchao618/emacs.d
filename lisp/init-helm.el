@@ -133,4 +133,15 @@
 
 (global-set-key (kbd "C-c f d") 'helm-fd)
 
+;; Customize helm-rg and helm-grep file name color for better readability
+;; Try M-x list-colors-display to see all available colors
+(with-eval-after-load 'helm-grep
+  (set-face-attribute 'helm-grep-file nil
+                      :foreground "orange"
+                      :weight 'bold))
+
+(with-eval-after-load 'helm-rg
+  (set-face-attribute 'helm-rg-file-match-face nil
+                      :foreground "orange"
+                      :weight 'bold))
 (provide 'init-helm)
