@@ -139,8 +139,7 @@ mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
 ;  (other-window (- (prefix-numeric-value n))))
 ;(global-set-key "\C-xp" 'other-window-backward)
 
-
-;; undo-tree
+;; undo-tree - Enable globally for Evil compatibility
 (require 'init-undo-tree)
 (diminish 'undo-tree-mode)
 
